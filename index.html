@@ -415,7 +415,7 @@ function VC_LOGIN_V28(){
   <button onclick="show('sources')">Sources</button>
   <button id="adminNav" class="hidden" onclick="show('admin')">Admin</button>
   <button onclick="show('help')">Help & Purpose</button>
-<button class="nav-btn" data-page="issue-log" onclick="showPage('issue-log')">Issue Log</button></nav>
+<button type="button" class="nav-btn" data-page="issue-log" onclick="VC_OPEN_ISSUE_LOG(); return false;">Issue Log</button></nav>
 </header>
 
 <main>
@@ -1833,6 +1833,58 @@ window.updateTraining=function(i,k,v){
   localStorage.setItem('vcNextTraining',JSON.stringify(list));
 };
 document.addEventListener('DOMContentLoaded',()=>setTimeout(renderNextTraining,0));
+</script>
+
+
+<script id="issueLogNavFix">
+window.VC_OPEN_ISSUE_LOG = function(){
+  try{
+    // Hide all known app page containers.
+    document.querySelectorAll('.page-section, .page, [data-page-section]').forEach(function(el){
+      el.style.display = 'none';
+      el.classList.remove('active');
+    });
+
+    // Also hide common sections used by earlier builds.
+    document.querySelectorAll('main > section').forEach(function(el){
+      el.style.display = 'none';
+      el.classList.remove('active');
+    });
+
+    var issue = document.getElementById('issue-log');
+    if (!issue) {
+      alert('Issue Log section was not found.');
+      return;
+    }
+
+    issue.style.display = 'block';
+    issue.classList.add('active');
+
+    // Update nav active state.
+    document.querySelectorAll('.nav-btn').forEach(function(btn){
+      btn.classList.remove('active');
+    });
+    document.querySelectorAll('[data-page="issue-log"]').forEach(function(btn){
+      btn.classList.add('active');
+    });
+
+    if (typeof window.renderIssueLogTable === 'function') {
+      window.renderIssueLogTable();
+    }
+    if (typeof window.renderNextTraining === 'function') {
+      window.renderNextTraining();
+    }
+
+    issue.scrollIntoView({behavior:'smooth', block:'start'});
+  } catch(err) {
+    console.error('Issue Log navigation error:', err);
+    var issue = document.getElementById('issue-log');
+    if (issue) {
+      issue.style.display='block';
+      issue.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+};
 </script>
 
 </body>
