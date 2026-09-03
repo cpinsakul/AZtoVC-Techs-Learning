@@ -64,6 +64,18 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .media-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .media-actions a{text-decoration:none;display:inline-block}
 .media-note{font-size:12px;color:#64748b;margin-top:8px}
+
+.watch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.update-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.update-card h3{margin:5px 0 8px}
+.status-live{background:#dcfce7;color:#166534}.status-pilot{background:#dbeafe;color:#1e40af}.status-note{background:#fef3c7;color:#92400e}
+.class-row{display:grid;grid-template-columns:1.6fr .7fr .7fr .8fr;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.class-row.head{font-weight:700;background:#edf2f7;padding:10px;border-radius:8px}
+.class-link{color:#185abd;font-weight:600;text-decoration:none}
+.class-link:hover{text-decoration:underline}
+.track-actions{display:flex;gap:8px;flex-wrap:wrap}
+.meter{height:14px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:8px 0 4px}.meter>div{height:100%;background:#185abd}
+@media(max-width:760px){.class-row{grid-template-columns:1fr}.class-row.head{display:none}}
 </style>
 </head>
 <body>
@@ -91,6 +103,8 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
  <nav>
   <button onclick="show('home')">Dashboard</button>
   <button onclick="show('catalog')">Technology Catalog</button>
+  <button onclick="show('watch')">Amazon Tech Watch</button>
+  <button onclick="show('classes')">My Classes</button>
   <button onclick="show('assessment')">VC Fit Check</button>
   <button onclick="show('roadmap')">Implementation</button>
   <button onclick="show('learning')">Learning</button>
@@ -143,6 +157,60 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
  </div>
  <div id="searchCount" class="small" style="margin-bottom:10px"></div>
  <div class="grid" id="techCards"></div>
+</section>
+
+
+<section id="watch">
+ <h2>Amazon Warehouse Technology Watch</h2>
+ <div class="notice success">
+  <b>Purpose:</b> Review Amazon's newest fulfillment, robotics and AI developments and decide whether each idea has value for VC. 
+  <br><span class="small">Research snapshot built from Amazon sources reviewed September 3, 2026. This standalone HTML cannot automatically fetch live web updates; use the official links below or a scheduled monitor for ongoing checks.</span>
+ </div>
+ <div class="card" style="margin-bottom:16px">
+  <div class="grid">
+   <div><div class="small">Last research review</div><div class="kpi" style="font-size:22px">Sep 3, 2026</div></div>
+   <div><div class="small">Technologies being watched</div><div class="kpi">8</div></div>
+   <div><div class="small">VC approach</div><div class="kpi" style="font-size:22px">Learn → Pilot → Measure</div></div>
+  </div>
+  <div class="media-actions">
+   <a class="btn" href="https://www.aboutamazon.com/news/operations" target="_blank" rel="noopener">Open Amazon Operations</a>
+   <a class="btn secondary" href="https://www.aboutamazon.com/news/tag/fulfillment-center" target="_blank" rel="noopener">Fulfillment Center Updates</a>
+  </div>
+ </div>
+ <div class="watch-grid">
+  <div class="update-card"><span class="tag status-pilot">Next generation / pilot</span><h3>🤖 Next-gen Proteus</h3><p>Amazon's newer Proteus adds natural-language interaction and is intended to take on more physically demanding cart-movement tasks.</p><p><b>VC learning:</b> AMR fleet control, natural-language robotics, safety zones, material movement.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-proteus-robot-europe-investment-employee-support">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-live">Expanding</span><h3>🦾 Vulcan</h3><p>Amazon describes Vulcan as its first robot with a sense of touch, using sensing to pick and stow inventory.</p><p><b>VC learning:</b> computer vision, tactile sensing, robotic QA, ergonomics.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-vulcan-robot-pick-stow-touch">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-pilot">Expanding</span><h3>🏗️ STARK</h3><p>A collaborative tote-handling system designed to move full totes from conveyors to carts and reduce repetitive heavy lifting.</p><p><b>VC learning:</b> conveyor handoff, tote standards, robotic material handling.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-proteus-robot-europe-investment-employee-support">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-live">AI fleet coordination</span><h3>🧠 DeepFleet</h3><p>Amazon's AI foundation model coordinates movement across its large mobile-robot fleet.</p><p><b>VC learning:</b> routing, optimization, fleet data, AI operations.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-live">AI operations</span><h3>💡 Project Eluna</h3><p>Amazon describes Eluna as agentic AI intended to help operations leaders make better decisions.</p><p><b>VC learning:</b> operational decision support, exception analysis, AI-assisted management.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/new-robots-amazon-fulfillment-agentic-ai">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-note">Important status change</span><h3>🔧 Blue Jay</h3><p>Amazon introduced Blue Jay in 2025, but its article was updated in February 2026 to say Blue Jay is no longer being used in operations. The underlying technology continues to inform other work.</p><p><b>VC lesson:</b> do not assume every announced pilot becomes production technology.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/new-robots-amazon-fulfillment-agentic-ai">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-live">Deployed concept</span><h3>📦 Sequoia</h3><p>Containerized inventory plus robotics is central to Amazon's next-generation fulfillment-center design.</p><p><b>VC learning:</b> standardized totes/zones, goods-to-person concepts, digital location tracking.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-robotics-ai">Amazon source ↗</a></div>
+  <div class="update-card"><span class="tag status-live">Item handling</span><h3>🦿 Sparrow</h3><p>Sparrow uses computer vision and robotics to detect, select and handle individual inventory items.</p><p><b>VC learning:</b> AI vision, object recognition, automated QA and picking.</p><a class="class-link" target="_blank" rel="noopener" href="https://www.aboutamazon.com/news/operations/amazon-introduces-sparrow-a-state-of-the-art-robot-that-handles-millions-of-diverse-products">Amazon source ↗</a></div>
+ </div>
+</section>
+
+<section id="classes">
+ <h2>My Warehouse Technology Learning Plan</h2>
+ <div class="notice success"><b>Goal:</b> Build skills that connect directly to smart-warehouse technology—not random classes. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
+ <div class="card">
+  <div class="grid">
+   <div><div class="small">Overall progress</div><div id="coursePct" class="kpi">0%</div></div>
+   <div><div class="small">Completed</div><div id="courseDone" class="kpi">0 / 10</div></div>
+   <div><div class="small">Recommended order</div><div class="kpi" style="font-size:22px">Foundation → Advanced</div></div>
+  </div>
+  <div class="meter"><div id="courseMeter" style="width:0%"></div></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <div class="class-row head"><div>Class / Skill</div><div>Technology Link</div><div>Level</div><div>Track</div></div>
+  <div id="courseRows"></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+   <h3>Personal Learning Notes</h3>
+   <label>What did you learn?</label><input id="classNoteTopic" placeholder="Example: Created relational Asset and Movement tables">
+   <label>How can VC use it?</label><textarea id="classNoteText" rows="3" placeholder="Example: Use AssetID as the parent and track each warehouse movement as a child transaction."></textarea>
+   <button class="btn" onclick="saveClassNote()">Save Learning Note</button>
+   <div id="classNotes" style="margin-top:12px"></div>
+ </div>
 </section>
 
 <section id="assessment">
@@ -352,7 +420,45 @@ function filterTechnologies(){
  renderTechCards(filtered);
 }
 function clearTechSearch(){document.getElementById("techSearch").value="";renderTechCards(technologies);}
-buildCatalog();renderLearning();applyUser();
+
+const warehouseCourses=[
+ {id:"sql",name:"1. SQL & Relational Database Fundamentals",tech:"Asset/WMS data",level:"Foundation",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Learn tables, keys, relationships, queries and warehouse transaction models."},
+ {id:"python",name:"2. Programming Fundamentals — Python or JavaScript",tech:"Automation / APIs",level:"Foundation",url:"https://docs.aws.amazon.com/serverless/latest/devguide/serverless-core.html",why:"Useful for APIs, automation, data processing and future AI integrations."},
+ {id:"aws",name:"3. AWS Cloud Foundations / Builder Labs",tech:"Amazon cloud",level:"Foundation",url:"https://aws.amazon.com/training/",why:"Understand compute, storage, networking, security, databases and serverless services."},
+ {id:"awsdb",name:"4. AWS Database Learning Plan",tech:"RDS / database",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Connect database design to cloud warehouse systems."},
+ {id:"dev",name:"5. AWS Developer Learning Plan",tech:"Cloud apps / APIs",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/developer/",why:"Build, deploy and modernize cloud applications and services."},
+ {id:"serverless",name:"6. AWS Serverless Learning Plan",tech:"Lambda / events",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/serverless/",why:"Learn event-driven workflows useful for scanners, alerts and IoT events."},
+ {id:"dv",name:"7. Microsoft Dataverse Data Modeling",tech:"VC data platform",level:"Intermediate",url:"https://learn.microsoft.com/en-us/training/paths/build-data-model-microsoft-dataverse/",why:"Design secure tables, relationships, roles and business rules."},
+ {id:"pa",name:"8. Power Apps Application Development",tech:"Mobile scanning",level:"Intermediate",url:"https://learn.microsoft.com/en-us/training/paths/build-apps-portals-power-apps/",why:"Build warehouse receiving, movement, QA and inventory apps."},
+ {id:"api",name:"9. Dataverse Web API & Integration",tech:"Integration",level:"Advanced",url:"https://learn.microsoft.com/en-us/training/paths/integrate-power-platform-dataverse/",why:"Connect Power Platform to code, Azure and external systems."},
+ {id:"bi",name:"10. Power BI + Dataverse Analytics",tech:"Operations dashboard",level:"Intermediate",url:"https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-powerbi-connector",why:"Turn operational warehouse data into KPIs, exceptions and readiness dashboards."}
+];
+
+function getCourseState(){return JSON.parse(localStorage.getItem("vcWarehouseCourses")||"{}")}
+function renderCourses(){
+ const state=getCourseState(), rows=document.getElementById("courseRows"); if(!rows)return;
+ rows.innerHTML=warehouseCourses.map(c=>`<div class="class-row">
+   <div><a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a><div class="small">${c.why}</div></div>
+   <div>${c.tech}</div><div><span class="tag">${c.level}</span></div>
+   <div class="track-actions"><label style="display:flex;align-items:center;gap:6px;font-weight:600"><input style="width:auto;margin:0" type="checkbox" ${state[c.id]?"checked":""} onchange="setCourse('${c.id}',this.checked)"> Done</label></div>
+ </div>`).join("");
+ const done=warehouseCourses.filter(c=>state[c.id]).length, pct=Math.round(done/warehouseCourses.length*100);
+ document.getElementById("coursePct").textContent=pct+"%";
+ document.getElementById("courseDone").textContent=done+" / "+warehouseCourses.length;
+ document.getElementById("courseMeter").style.width=pct+"%";
+}
+function setCourse(id,val){const s=getCourseState();s[id]=val;localStorage.setItem("vcWarehouseCourses",JSON.stringify(s));renderCourses()}
+function saveClassNote(){
+ const t=document.getElementById("classNoteTopic").value.trim(), n=document.getElementById("classNoteText").value.trim(); if(!t)return;
+ const arr=JSON.parse(localStorage.getItem("vcWarehouseClassNotes")||"[]");arr.unshift({t,n,d:new Date().toLocaleDateString()});
+ localStorage.setItem("vcWarehouseClassNotes",JSON.stringify(arr));document.getElementById("classNoteTopic").value="";document.getElementById("classNoteText").value="";renderClassNotes();
+}
+function renderClassNotes(){
+ const el=document.getElementById("classNotes");if(!el)return;const arr=JSON.parse(localStorage.getItem("vcWarehouseClassNotes")||"[]");
+ el.innerHTML=arr.length?arr.map(x=>`<div class="notice"><b>${escapeHtml(x.t)}</b> <span class="small">${x.d}</span><br>${escapeHtml(x.n)}</div>`).join(""):"<span class='small'>No class notes saved yet.</span>";
+}
+
+buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
 </script>
 </body>
