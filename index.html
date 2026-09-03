@@ -161,6 +161,15 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .search-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .solution-card{border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-top:10px;background:#fff}
 .issue-history-item{border-bottom:1px solid #e2e8f0;padding:10px 0}
+.issue-log-wrap{overflow:auto;margin-top:10px}
+.issue-log-table{width:100%;border-collapse:collapse;font-size:12px;min-width:980px}
+.issue-log-table th,.issue-log-table td{border:1px solid #dbe3ee;padding:8px;vertical-align:top;text-align:left}
+.issue-log-table th{background:#eef4fb;color:#16365c;position:sticky;top:0}
+.issue-log-table tr:nth-child(even){background:#fafcff}
+.issue-note-box{width:100%;min-height:56px;resize:vertical;border:1px solid #cbd5e1;border-radius:7px;padding:7px;font:inherit}
+.issue-log-actions{display:flex;gap:5px;flex-wrap:wrap}
+.issue-log-actions .btn{padding:6px 8px;font-size:11px}
+
 .issue-history-item:last-child{border-bottom:none}
 .issue-status{font-size:12px;font-weight:800;border-radius:999px;padding:3px 8px;background:#e2e8f0}
 .issue-meta{font-size:12px;color:#64748b;margin:4px 0}
@@ -527,8 +536,8 @@ function VC_LOGIN_V28(){
       </div>
 
       <div class="card" style="margin-top:14px">
-        <h3>My Issue Transactions</h3>
-        <div class="small">Saved only in this browser for the prototype.</div>
+        <h3>Issue Log</h3>
+        <div class="small">Every submitted issue is added to the table. Add or update your notes at any time. Saved only in this browser for the prototype.</div>
         <div id="issueHistory"></div>
         <button class="btn secondary" type="button" onclick="exportIssueHistory()" style="margin-top:10px">Export CSV</button>
       </div>
@@ -1223,7 +1232,8 @@ function issueFormData(){
     issue:(document.getElementById("issueText")?.value||"").trim(),
     tried:(document.getElementById("issueTried")?.value||"").trim(),
     status:"Open",
-    solution:""
+    solution:"",
+    notes:""
   };
 }
 function buildSearchLinks(d){
@@ -1317,18 +1327,26 @@ function clearIssueForm(){
 function renderIssueHistory(){
   const el=document.getElementById("issueHistory"); if(!el)return;
   const rows=getIssueHistory();
-  if(!rows.length){el.innerHTML='<p class="small">No saved development issues yet.</p>';return;}
-  el.innerHTML=rows.slice(0,20).map((r,i)=>`<div class="issue-history-item">
-    <div><b>${escapeHtml(r.title||r.area)}</b> <span class="issue-status">${escapeHtml(r.status||"Open")}</span></div>
-    <div class="issue-meta">${new Date(r.created).toLocaleString()} • ${escapeHtml(r.provider)} • ${escapeHtml(r.area)}</div>
-    <div class="small">${escapeHtml((r.issue||"").slice(0,180))}</div>
-    <div class="search-actions">
-      <button class="btn secondary" type="button" onclick="reopenIssue(${i})">Search Again</button>
-      <button class="btn secondary" type="button" onclick="addIssueSolution(${i})">Add Solution</button>
-      <button class="btn secondary" type="button" onclick="closeIssue(${i})">Close</button>
-    </div>
-    ${r.solution?`<div class="notice success" style="margin-top:8px"><b>Working solution:</b> ${escapeHtml(r.solution)}</div>`:""}
-  </div>`).join("");
+  if(!rows.length){el.innerHTML='<p class="small">No submitted issues yet.</p>';return;}
+  const shortDate=v=>new Date(v).toLocaleString("en-US",{month:"numeric",day:"numeric",year:"2-digit",hour:"numeric",minute:"2-digit"});
+  el.innerHTML=`<div class="issue-log-wrap"><table class="issue-log-table">
+    <thead><tr><th>ID</th><th>Date</th><th>Provider / Area</th><th>Issue</th><th>Status</th><th>Notes — editable anytime</th><th>Solution</th><th>Actions</th></tr></thead>
+    <tbody>${rows.slice(0,100).map((r,i)=>`<tr>
+      <td>${escapeHtml(r.id||"")}</td>
+      <td>${shortDate(r.created)}</td>
+      <td><b>${escapeHtml(r.provider||"")}</b><br>${escapeHtml(r.area||"")}</td>
+      <td><b>${escapeHtml(r.title||r.area||"")}</b><br><span class="small">${escapeHtml((r.issue||"").slice(0,220))}</span></td>
+      <td><span class="issue-status">${escapeHtml(r.status||"Open")}</span></td>
+      <td><textarea class="issue-note-box" id="issueNote_${i}" placeholder="Add follow-up note, test result, next step, reminder...">${escapeHtml(r.notes||"")}</textarea><button class="btn secondary" type="button" onclick="saveIssueNote(${i})">Save Note</button></td>
+      <td>${r.solution?escapeHtml(r.solution):'<span class="small">Not added</span>'}</td>
+      <td><div class="issue-log-actions"><button class="btn secondary" type="button" onclick="reopenIssue(${i})">Research</button><button class="btn secondary" type="button" onclick="addIssueSolution(${i})">Solution</button><button class="btn secondary" type="button" onclick="closeIssue(${i})">Close</button></div></td>
+    </tr>`).join("")}</tbody></table></div>`;
+}
+function saveIssueNote(i){
+  const rows=getIssueHistory(); if(!rows[i])return;
+  const box=document.getElementById(`issueNote_${i}`); if(!box)return;
+  rows[i].notes=box.value.trim(); rows[i].noteUpdated=new Date().toISOString();
+  setIssueHistory(rows); renderIssueHistory();
 }
 function reopenIssue(i){
   const r=getIssueHistory()[i]; if(!r)return;
@@ -1354,11 +1372,11 @@ function closeIssue(i){
 function exportIssueHistory(){
   const rows=getIssueHistory();
   if(!rows.length){alert("No issues to export.");return;}
-  const fields=["id","created","provider","area","title","issue","tried","status","solution"];
+  const fields=["id","created","provider","area","title","issue","tried","status","notes","noteUpdated","solution"];
   const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
   const csv=[fields.join(","),...rows.map(r=>fields.map(f=>esc(r[f])).join(","))].join("\n");
   const blob=new Blob([csv],{type:"text/csv"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="VC_Development_Issue_History.csv";a.click();
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="VC_Smart_Tech_Hub_Issue_Log.csv";a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
 
