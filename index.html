@@ -76,6 +76,52 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .track-actions{display:flex;gap:8px;flex-wrap:wrap}
 .meter{height:14px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:8px 0 4px}.meter>div{height:100%;background:#185abd}
 @media(max-width:760px){.class-row{grid-template-columns:1fr}.class-row.head{display:none}}
+
+/* v10 readability + workflow improvements */
+.tag{
+  background:#dbe7f5!important;
+  color:#102a43!important;
+  border:1px solid #9fb6cf;
+  font-size:12px;
+  font-weight:800;
+}
+.high{background:#d7f5e5!important;color:#14532d!important;border-color:#86d7ad!important}
+.medium{background:#fff0bf!important;color:#78350f!important;border-color:#e3ba54!important}
+.future{background:#e5e7ff!important;color:#312e81!important;border-color:#aaaee8!important}
+.status-live{background:#d7f5e5!important;color:#14532d!important;border-color:#86d7ad!important}
+.status-pilot{background:#dcecff!important;color:#153e75!important;border-color:#8bb7e6!important}
+.status-note{background:#fff0bf!important;color:#78350f!important;border-color:#e3ba54!important}
+.card h3,.update-card h3{color:#102a43}
+.card p,.update-card p{line-height:1.55}
+.small{color:#4b5f73!important}
+.btn{box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.btn:focus,nav button:focus,input:focus,select:focus,textarea:focus{
+  outline:3px solid #f6c343;outline-offset:2px
+}
+.workflow-box{
+  margin-top:14px;padding:13px;border-radius:10px;background:#f8fafc;
+  border:1px solid #cbd5e1
+}
+.workflow-title{font-size:12px;font-weight:800;color:#334155;margin-bottom:9px;text-transform:uppercase;letter-spacing:.03em}
+.workflow-flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.workflow-node{
+  background:#fff;border:2px solid #8fa6bd;color:#17324d;border-radius:8px;
+  padding:8px 10px;font-size:12px;font-weight:700;min-width:84px;text-align:center
+}
+.workflow-arrow{font-size:20px;font-weight:900;color:#475569}
+.vc-result{border-color:#2d7d66;background:#eefbf6}
+.tech-summary{
+  background:#edf4fb;border-left:4px solid #185abd;padding:10px 12px;border-radius:7px;
+  margin:10px 0;color:#17324d
+}
+.readable-callout{
+  background:#fff8df!important;border:2px solid #e0b33e!important;color:#5d4300!important;
+}
+@media(max-width:560px){
+  .workflow-flow{display:grid;grid-template-columns:1fr}
+  .workflow-arrow{transform:rotate(90deg);text-align:center}
+  .workflow-node{width:100%}
+}
 </style>
 </head>
 <body>
@@ -97,7 +143,7 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 <header>
  <div class="header-row">
   <div><h1>VC Smart Warehouse Technology Learning & Implementation Hub</h1>
-  <div class="sub">Amazon-inspired ideas adapted for a practical warehouse environment</div></div>
+  <div class="sub">Amazon-inspired technology adapted for practical VC warehouse operations</div></div>
   <div><span id="userBadge" class="tag">Not signed in</span> <button class="btn secondary" onclick="logout()">Sign out</button></div>
  </div>
  <nav>
@@ -129,15 +175,15 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
       <div style="position:absolute;right:22px;top:22px;font-weight:700">Scan → Track → Move → Analyze</div>
    </div>
  </div>
- <div class="notice success"><b>Purpose:</b> Learn from Amazon’s warehouse technology, evaluate what fits VC operations, and implement lower-risk improvements before considering expensive robotics.</div>
+ <div class="notice success"><b>Purpose:</b> Understand warehouse technologies, see how they work, evaluate their fit for VC, and implement practical improvements in phases.</div>
  <div class="grid">
   <div class="card"><div class="small">Priority Technologies</div><div class="kpi">4</div><p>Barcode/mobile scanning, dashboards, centralized data, RFID/BLE pilot.</p></div>
   <div class="card"><div class="small">Medium-Term Options</div><div class="kpi">3</div><p>Smart carts, computer vision QA, small conveyor/sortation.</p></div>
   <div class="card"><div class="small">Long-Term / High Cost</div><div class="kpi">2</div><p>AMRs and large automated material movement systems.</p></div>
-  <div class="card"><div class="small">Recommended Strategy</div><div class="kpi">Pilot → Measure</div><p>Start with operational problems and measurable KPIs—not technology first.</p></div>
+  <div class="card"><div class="small">Recommended Approach</div><div class="kpi">Test → Measure → Improve</div><p>Start with operational problems and measurable KPIs—not technology first.</p></div>
  </div>
  <div class="card" style="margin-top:16px">
-  <h3>Amazon idea → VC adaptation</h3>
+  <h3>Amazon Technology → Practical VC Adaptation</h3>
   <table>
    <tr><th>Amazon concept</th><th>Practical VC adaptation</th><th>Why</th></tr>
    <tr><td>Robots bring inventory to workers</td><td>Barcode/RFID location tracking + staged carts</td><td>Captures much of the visibility benefit without robotics cost.</td></tr>
@@ -156,6 +202,10 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
    <button class="btn secondary" onclick="clearTechSearch()">Clear</button>
  </div>
  <div id="searchCount" class="small" style="margin-bottom:10px"></div>
+ <div class="card" style="margin-bottom:16px">
+  <h3 style="margin-bottom:8px">How to read each technology card</h3>
+  <p style="margin:0">Each card now shows <b>What it does → Workflow → How VC can use it → Recommended phase → Learning source.</b> The final green workflow box represents the operational result.</p>
+ </div>
  <div class="grid" id="techCards"></div>
 </section>
 
@@ -169,8 +219,8 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
  <div class="card" style="margin-bottom:16px">
   <div class="grid">
    <div><div class="small">Last research review</div><div class="kpi" style="font-size:22px">Sep 3, 2026</div></div>
-   <div><div class="small">Technologies being watched</div><div class="kpi">8</div></div>
-   <div><div class="small">VC approach</div><div class="kpi" style="font-size:22px">Learn → Pilot → Measure</div></div>
+   <div><div class="small">Technologies being watched</div><div class="kpi">20+</div></div>
+   <div><div class="small">VC approach</div><div class="kpi" style="font-size:22px">Learn → Test → Measure → Improve</div></div>
   </div>
   <div class="media-actions">
    <a class="btn" href="https://www.aboutamazon.com/news/operations" target="_blank" rel="noopener">Open Amazon Operations</a>
@@ -305,55 +355,103 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 const DEMO_CODE = "2612100"; // DEMO ONLY. Client-side passcodes are visible in source and are not production security.
 
 const technologies = [
- {icon:"📦",name:"Amazon Fulfillment Process / Scanning",fit:"High",cost:"Low–Medium",phase:"Start now",
+ {icon:"📦",name:"Amazon Fulfillment Process / Scanning",workflow:["Item / Asset", "Scan ID", "Update Location", "VC Dashboard"],fit:"High",cost:"Low–Medium",phase:"Start now",
   desc:"Amazon’s fulfillment flow uses coded storage, scanning, labeling and automated movement through the facility.",
   voc:"Adapt with standardized Asset IDs, barcode/QR scanning, warehouse zones and scan checkpoints.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%93%A6%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EFulfillment%20Scanning%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EScan%20%E2%80%A2%20Track%20%E2%80%A2%20Stage%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-photo-tour",
   youtube:"https://www.youtube.com/results?search_query=Amazon+fulfillment+center+tour"},
- {icon:"🤖",name:"Proteus Autonomous Mobile Robot (AMR)",fit:"Future",cost:"High",phase:"Long term",
+ {icon:"🤖",name:"Proteus Autonomous Mobile Robot (AMR)",workflow:["Move Request", "AMR Route", "Cart Movement", "Confirm Delivery"],fit:"Future",cost:"High",phase:"Long term",
   desc:"Proteus is Amazon’s fully autonomous mobile robot designed to move carts while navigating open areas around employees.",
   voc:"VC equivalent: first measure cart travel, distance, frequency and labor effort; evaluate AMR only if the business case is strong.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%A4%96%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EProteus%20AMR%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EAutonomous%20material%20movement%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations/amazon-robotics-robots-fulfillment-center",
   youtube:"https://www.youtube.com/results?search_query=Amazon+Proteus+robot"},
- {icon:"🦾",name:"Sparrow AI Robotic Arm / Computer Vision",fit:"Medium",cost:"High",phase:"Later pilot",
+ {icon:"🦾",name:"Sparrow AI Robotic Arm / Computer Vision",workflow:["Item Image", "AI Detection", "Pick / Verify", "QA Result"],fit:"Medium",cost:"High",phase:"Later pilot",
   desc:"Amazon says Sparrow uses computer vision and AI to detect, select and handle individual products.",
   voc:"VC equivalent: begin with camera-assisted QA or barcode validation before considering robotic item handling.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%A6%BE%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EAI%20Vision%20%26%20Robotics%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EDetect%20%E2%80%A2%20Pick%20%E2%80%A2%20Verify%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations/amazon-introduces-sparrow-a-state-of-the-art-robot-that-handles-millions-of-diverse-products",
   youtube:"https://www.youtube.com/results?search_query=Amazon+Sparrow+robot"},
- {icon:"🏗️",name:"Sequoia Containerized Inventory System",fit:"Future",cost:"High",phase:"Study / long term",
+ {icon:"🏗️",name:"Sequoia Containerized Inventory System",workflow:["Inventory Tote", "Robot Storage", "Workstation", "Updated Inventory"],fit:"Future",cost:"High",phase:"Study / long term",
   desc:"Sequoia combines mobile robots, containerized storage, robotic arms and ergonomic employee workstations.",
   voc:"Use the concept—not the scale: organize equipment into controlled zones/totes, track location digitally, and bring staged equipment to work areas.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%8F%97%EF%B8%8F%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3ESequoia%20System%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EContainerized%20inventory%20flow%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations/amazon-robotics",
   youtube:"https://www.youtube.com/results?search_query=Amazon+Sequoia+robotics"},
- {icon:"🏭",name:"Conveyor & Automated Sortation",fit:"Medium",cost:"Medium–High",phase:"Evaluate",
+ {icon:"🏭",name:"Conveyor & Automated Sortation",workflow:["Item Entry", "Scan / Sensor", "Sort Decision", "Staging Zone"],fit:"Medium",cost:"Medium–High",phase:"Evaluate",
   desc:"Amazon fulfillment centers use conveyor and automated package movement/sortation as orders travel through packing and shipping.",
   voc:"Consider small fixed lanes or staging chutes only for repetitive, predictable high-volume movement.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%8F%AD%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EConveyor%20%26%20Sortation%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EMove%20%E2%80%A2%20Route%20%E2%80%A2%20Stage%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-photo-tour",
   youtube:"https://www.youtube.com/results?search_query=Amazon+fulfillment+center+tour"},
- {icon:"📊",name:"Warehouse Data & Operational Dashboards",fit:"High",cost:"Low–Medium",phase:"Start now",
+ {icon:"📊",name:"Warehouse Data & Operational Dashboards",workflow:["Warehouse Data", "Data Model", "Dashboard", "Operational Action"],fit:"High",cost:"Low–Medium",phase:"Start now",
   desc:"Amazon’s next-generation fulfillment model coordinates inventory, robotics, people and flow using software, AI and operational data.",
   voc:"Expand existing Power BI dashboards for asset location, movement, QA, exceptions, workload and readiness.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%93%8A%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EOperational%20Dashboards%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EMonitor%20%E2%80%A2%20Analyze%20%E2%80%A2%20Decide%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://www.aboutamazon.com/news/operations",
   youtube:"https://www.youtube.com/results?search_query=Amazon+fulfillment+center+tour"},
- {icon:"📡",name:"RFID / BLE Asset Tracking",fit:"High pilot",cost:"Medium",phase:"Pilot",
+ {icon:"📡",name:"RFID / BLE Asset Tracking",workflow:["Tagged Asset", "Reader / Signal", "Location Event", "Asset Visibility"],fit:"High pilot",cost:"Medium",phase:"Pilot",
   desc:"RFID/BLE is a VC adaptation idea rather than a technology established by the Amazon sources linked here.",
   voc:"Pilot selected high-value or high-volume assets and compare read accuracy, speed and cost against barcode scanning.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%F0%9F%93%A1%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3ERFID%20/%20BLE%20Tracking%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3ELocate%20%E2%80%A2%20Read%20%E2%80%A2%20Verify%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://support.gs1.org/support/solutions/articles/43000734236-what-are-the-advantages-of-rain-rfid-for-inventory-",
   youtube:"https://www.youtube.com/results?search_query=RAIN+RFID+warehouse+inventory"},
- {icon:"⚙️",name:"Power Platform Lightweight WMS",fit:"High",cost:"Low–Medium",phase:"Start now",
+ {icon:"⚙️",name:"Power Platform Lightweight WMS",workflow:["User Scan", "Power App", "Dataverse / Flow", "Power BI / Action"],fit:"High",cost:"Low–Medium",phase:"Start now",
   desc:"This is a VC adaptation, not an Amazon product: Power Apps + Dataverse/SQL + Power Automate + Power BI can provide lightweight warehouse workflow and visibility.",
   voc:"Use for receiving, staging, assignment, movement, QA, return, exception workflow and operational reporting.",
   image:"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22500%22%20viewBox%3D%220%200%20900%20500%22%3E%0A%20%20%20%20%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23eef3f8%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2235%22%20width%3D%22830%22%20height%3D%22430%22%20rx%3D%2224%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23cfd8e3%22%20stroke-width%3D%223%22/%3E%0A%20%20%20%20%3Crect%20x%3D%2270%22%20y%3D%22105%22%20width%3D%22220%22%20height%3D%22250%22%20fill%3D%22%23e8eef7%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22180%22%20x2%3D%22290%22%20y2%3D%22180%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Cline%20x1%3D%2270%22%20y1%3D%22255%22%20x2%3D%22290%22%20y2%3D%22255%22%20stroke%3D%22%2360758a%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22190%22%20y%3D%22215%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Crect%20x%3D%22110%22%20y%3D%22290%22%20width%3D%2260%22%20height%3D%2236%22%20fill%3D%22%23f0b44d%22/%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22165%22%20font-size%3D%2284%22%20font-family%3D%22Segoe%20UI%20Emoji%2C%20Arial%22%3E%E2%9A%99%EF%B8%8F%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22250%22%20font-size%3D%2234%22%20font-weight%3D%22700%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%2317324d%22%3EPower%20Platform%20WMS%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%22380%22%20y%3D%22300%22%20font-size%3D%2223%22%20font-family%3D%22Segoe%20UI%2C%20Arial%22%20fill%3D%22%235d6d7e%22%3EApps%20%E2%80%A2%20Automate%20%E2%80%A2%20Data%20%E2%80%A2%20BI%3C/text%3E%0A%20%20%20%20%3Crect%20x%3D%22380%22%20y%3D%22335%22%20width%3D%22280%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23185abd%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22730%22%20cy%3D%22340%22%20r%3D%2228%22%20fill%3D%22%230f766e%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M720%20340%20l10%2010%20l20%20-24%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%20%20%3C/svg%3E",
   amazon:"https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-intro",
   youtube:"https://www.youtube.com/results?search_query=Microsoft+Power+Apps+warehouse+inventory"}
-];
+,
+ {icon:"🧠",name:"DeepFleet AI Robot Fleet Coordination",workflow:["Robot Fleet", "Movement Data", "AI Routing", "Optimized Paths"],fit:"Future",cost:"High",phase:"Learn / future",
+  desc:"AI-based fleet coordination concepts can optimize paths and movement across many mobile robots.",
+  voc:"Study routing and optimization first using warehouse movement data before any robot-fleet investment.",image:"",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model",youtube:"https://www.youtube.com/results?search_query=Amazon+DeepFleet+robots"},
+ {icon:"🦾",name:"Vulcan Touch-Sensing Robotics",workflow:["Item / Bin", "Vision + Touch", "Robotic Pick", "Confirm Placement"],fit:"Future",cost:"High",phase:"Learn / future",
+  desc:"Touch-sensing robotic manipulation combines vision, force/tactile sensing and robotic handling.",
+  voc:"Useful as a learning case for ergonomics, AI QA and future automated handling.",image:"",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-vulcan-robot-pick-stow-touch",youtube:"https://www.youtube.com/results?search_query=Amazon+Vulcan+robot"},
+ {icon:"📦",name:"STARK Tote Handling",workflow:["Full Tote", "Robot Transfer", "Cart / Conveyor", "Next Process"],fit:"Medium",cost:"High",phase:"Evaluate",
+  desc:"Automated tote handling reduces repetitive transfer work between conveyors and carts.",
+  voc:"Map repetitive tote/cart handoffs and lifting effort before evaluating automation.",image:"",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-proteus-robot-europe-investment-employee-support",youtube:"https://www.youtube.com/results?search_query=Amazon+STARK+robot+tote"},
+ {icon:"💡",name:"Agentic AI Operations Support",workflow:["Exceptions", "AI Analysis", "Recommendation", "Human Decision"],fit:"Medium",cost:"Medium",phase:"Learn / pilot",
+  desc:"AI agents can support operational decision-making, exception review and management workflows.",
+  voc:"Potential future layer over VC dashboards to summarize exceptions and recommend next actions, with human review.",image:"",
+  amazon:"https://www.aboutamazon.com/news/operations/new-robots-amazon-fulfillment-agentic-ai",youtube:"https://www.youtube.com/results?search_query=Amazon+Project+Eluna+agentic+AI"},
+ {icon:"🌡️",name:"IoT Environmental Monitoring",workflow:["Sensor", "IoT Gateway", "Threshold Check", "Alert / Dashboard"],fit:"High pilot",cost:"Low–Medium",phase:"Pilot",
+  desc:"Connected sensors can monitor temperature, humidity, airflow, power or other warehouse conditions.",
+  voc:"Start with conditions that have a clear operational or safety requirement and send threshold alerts to dashboards/workflows.",image:"",
+  amazon:"https://aws.amazon.com/iot/",youtube:"https://www.youtube.com/results?search_query=AWS+IoT+warehouse+monitoring"},
+ {icon:"🏷️",name:"Smart Labels / QR Asset Identity",workflow:["Asset", "Unique Label", "Scan Event", "Trusted Record"],fit:"High",cost:"Low",phase:"Start now",
+  desc:"Standardized machine-readable labels create a reliable identity layer for warehouse assets, locations and containers.",
+  voc:"Define Asset ID, Location ID, Cart/Tote ID and transaction standards before advanced tracking.",image:"",
+  amazon:"https://support.gs1.org/support/solutions/articles/43000734100-what-are-the-business-benefits-of-using-gs1-barcodes-",youtube:"https://www.youtube.com/results?search_query=GS1+barcode+warehouse"},
+ {icon:"📍",name:"Real-Time Location Systems (RTLS)",workflow:["Tagged Asset", "Location Signal", "Position Engine", "Live Location"],fit:"Medium",cost:"Medium–High",phase:"Pilot after barcode",
+  desc:"RTLS technologies can estimate or detect the location of equipment using tags, anchors or wireless signals.",
+  voc:"Consider only for assets where manual location scanning creates significant delay or loss.",image:"",
+  amazon:"https://aws.amazon.com/iot/",youtube:"https://www.youtube.com/results?search_query=RTLS+warehouse+asset+tracking"},
+ {icon:"📲",name:"Handheld / Wearable Scanning",workflow:["Worker + Asset", "Mobile Scan", "Transaction", "Inventory Update"],fit:"High",cost:"Low–Medium",phase:"Start now",
+  desc:"Mobile and wearable scanners reduce keyboard entry and support point-of-work transaction capture.",
+  voc:"Strong fit for receiving, staging, QA, assignment, movement and return workflows.",image:"",
+  amazon:"https://support.gs1.org/support/solutions/articles/43000734100-what-are-the-business-benefits-of-using-gs1-barcodes-",youtube:"https://www.youtube.com/results?search_query=warehouse+wearable+barcode+scanner"},
+ {icon:"⚠️",name:"Exception & Predictive Alerts",workflow:["Operational Data", "Rule / Model", "Exception", "Notify / Resolve"],fit:"High",cost:"Low–Medium",phase:"Start now",
+  desc:"Rules and analytics identify missing scans, mismatches, aging inventory, unusual movement and threshold conditions.",
+  voc:"Combine Power Automate and Power BI so staff focus on exceptions instead of manually reviewing every record.",image:"",
+  amazon:"https://learn.microsoft.com/en-us/power-automate/",youtube:"https://www.youtube.com/results?search_query=Power+Automate+Power+BI+alerts"},
+ {icon:"🔌",name:"API & System Integration",workflow:["System A", "API", "Validation / Logic", "System B"],fit:"High",cost:"Medium",phase:"Build foundation",
+  desc:"APIs connect warehouse applications, databases, scanners, analytics and external enterprise systems.",
+  voc:"Use a controlled integration layer instead of duplicating data manually between systems.",image:"",
+  amazon:"https://docs.aws.amazon.com/apigateway/",youtube:"https://www.youtube.com/results?search_query=AWS+API+Gateway+tutorial"},
+ {icon:"🧪",name:"Digital Twin / Warehouse Simulation",workflow:["Warehouse Data", "Digital Model", "Scenario Test", "Decision"],fit:"Future",cost:"Medium–High",phase:"Study",
+  desc:"Simulation and digital-twin approaches can model flow, equipment and operational changes before physical implementation.",
+  voc:"Potential long-term tool for testing layout, staging, throughput or automation scenarios before buying equipment.",image:"",
+  amazon:"https://aws.amazon.com/iot-twinmaker/",youtube:"https://www.youtube.com/results?search_query=AWS+IoT+TwinMaker+digital+twin"},
+ {icon:"🔐",name:"Warehouse Cybersecurity & Identity",workflow:["User / Device", "SSO + Role", "Authorized Action", "Audit Log"],fit:"High",cost:"Medium",phase:"Required foundation",
+  desc:"Identity, least privilege, device security, audit logging and secure APIs protect operational warehouse systems.",
+  voc:"Use Entra ID/SSO, role-based access and server-side authorization; never depend on browser-only access codes in production.",image:"",
+  amazon:"https://learn.microsoft.com/en-us/entra/fundamentals/whatis",youtube:"https://www.youtube.com/results?search_query=Microsoft+Entra+ID+security+fundamentals"}];
 
 function show(id){
  document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
@@ -396,18 +494,35 @@ function renderLearning(){
 function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function renderTechCards(list){
  const c=document.getElementById("techCards");
- c.innerHTML=list.length?list.map(t=>`<div class="card">
+ c.innerHTML=list.length?list.map(t=>{
+   const wf=(t.workflow||["Input","Process","Decision","Result"]);
+   const workflowHtml=`<div class="workflow-box">
+      <div class="workflow-title">How this technology works</div>
+      <div class="workflow-flow">
+        <div class="workflow-node">${wf[0]}</div><div class="workflow-arrow">→</div>
+        <div class="workflow-node">${wf[1]}</div><div class="workflow-arrow">→</div>
+        <div class="workflow-node">${wf[2]}</div><div class="workflow-arrow">→</div>
+        <div class="workflow-node vc-result">${wf[3]}</div>
+      </div>
+   </div>`;
+   return `<div class="card">
  ${t.image?`<img class="media-img" src="${t.image}" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">`:`<div class="tech-icon">${t.icon||"🔧"}</div>`}
  <h3>${t.name}</h3>
- <span class="tag ${t.fit.startsWith("High")?"high":t.fit==="Medium"?"medium":"future"}">${t.fit}</span><span class="tag">${t.cost}</span>
- <p>${t.desc}</p><p><b>How VC can adapt it:</b> ${t.voc}</p><p class="small">Recommended phase: ${t.phase}</p>
+ <span class="tag ${t.fit.startsWith("High")?"high":t.fit==="Medium"?"medium":"future"}">${t.fit}</span>
+ <span class="tag">${t.cost}</span>
+ <div class="tech-summary"><b>What it does:</b> ${t.desc}</div>
+ ${workflowHtml}
+ <p><b>How VC can use it:</b> ${t.voc}</p>
+ <p class="small"><b>Recommended phase:</b> ${t.phase}</p>
  <div class="media-actions">
    <a class="btn" href="${t.amazon}" target="_blank" rel="noopener">Official / Learning Source</a>
    <a class="btn secondary" href="${t.youtube}" target="_blank" rel="noopener">▶ Find Video</a>
  </div>
- <div class="media-note">External learning resource. If your organization blocks an external site, use the technology name shown on this card to search the official Amazon About site or YouTube.</div>
- </div>`).join(""):"<div class='notice'>No technology matched your search.</div>";
- const count=document.getElementById("searchCount"); if(count)count.textContent=`Showing ${list.length} of ${technologies.length} technologies`;
+ <div class="media-note">External learning resource. If your organization blocks a site, search the technology name on the official Amazon site or YouTube.</div>
+ </div>`;
+ }).join(""):"<div class='notice readable-callout'>No technology matched your search. Try a shorter name such as RFID, AMR, AI, scanner, dashboard, or API.</div>";
+ const count=document.getElementById("searchCount");
+ if(count)count.textContent=`Showing ${list.length} of ${technologies.length} technologies`;
 }
 function buildCatalog(){
  const sel=document.getElementById("assessTech");
