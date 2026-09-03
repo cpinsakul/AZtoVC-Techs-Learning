@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VOC Smart Warehouse Technology Learning & Implementation Hub</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--ink:#17202a;--muted:#5d6d7e;--line:#dfe6ee;
+  --accent:#185abd;--accent2:#0f766e;--warn:#9a6700;--danger:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#102a43;color:white;padding:18px 24px;position:sticky;top:0;z-index:10}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:22px}.sub{opacity:.85;font-size:13px;margin-top:4px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+nav button,.btn{border:0;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:600}
+nav button{background:#e8eef7;color:#17324d}.btn{background:var(--accent);color:white}.btn.secondary{background:#475569}
+main{max-width:1250px;margin:auto;padding:22px}
+section{display:none}section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 2px 9px rgba(16,42,67,.05)}
+.card h3{margin-top:0}.tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700;margin-right:5px;background:#e8eef7}
+.high{background:#dcfce7;color:#166534}.medium{background:#fef3c7;color:#92400e}.future{background:#e0e7ff;color:#3730a3}
+.kpi{font-size:28px;font-weight:700;color:#102a43}.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;background:white;border-radius:10px;overflow:hidden}
+th,td{border-bottom:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}th{background:#edf2f7}
+input,select,textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:8px;margin:5px 0 10px}
+label{font-size:13px;font-weight:700}
+.notice{padding:12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;margin-bottom:16px}
+.success{background:#ecfdf5;border-color:#a7f3d0}.danger{background:#fef2f2;border-color:#fecaca}
+.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden}.progress>div{height:100%;background:#185abd}
+.source a{color:#185abd}.step{border-left:4px solid #185abd;padding-left:12px;margin:14px 0}
+.hidden{display:none!important}
+#loginOverlay{position:fixed;inset:0;background:rgba(15,23,42,.78);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginBox{max-width:430px;width:100%;background:white;border-radius:16px;padding:24px}
+footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
+@media(max-width:700px){main{padding:12px}table{font-size:13px}}
+
+.hero{
+  display:grid;grid-template-columns:1.3fr .9fr;gap:18px;align-items:center;
+  background:linear-gradient(135deg,#102a43,#185abd);color:#fff;
+  border-radius:18px;padding:24px;margin-bottom:18px;overflow:hidden
+}
+.hero h2{font-size:30px;margin:0 0 8px}.hero p{opacity:.9}
+.warehouse-graphic{position:relative;min-height:220px;background:#f8fafc;border-radius:16px;padding:18px;color:#102a43;overflow:hidden}
+.rack{position:absolute;width:64px;height:145px;border:5px solid #475569;bottom:28px}
+.rack:before,.rack:after{content:"";position:absolute;left:0;width:100%;height:4px;background:#475569}
+.rack:before{top:42px}.rack:after{top:90px}
+.r1{left:26px}.r2{left:110px}.r3{left:194px}
+.box{position:absolute;width:35px;height:23px;background:#f59e0b;border:2px solid #92400e;border-radius:3px}
+.b1{left:40px;bottom:48px}.b2{left:125px;bottom:96px}.b3{left:208px;bottom:142px}
+.robot{position:absolute;right:28px;bottom:28px;width:88px;height:48px;background:#185abd;border-radius:10px}
+.robot:before,.robot:after{content:"";position:absolute;bottom:-10px;width:18px;height:18px;background:#1f2937;border-radius:50%}
+.robot:before{left:12px}.robot:after{right:12px}
+.scanline{position:absolute;right:58px;top:22px;width:3px;height:130px;background:#10b981;box-shadow:0 0 12px #10b981}
+.search-wrap{display:flex;gap:10px;align-items:center;margin:12px 0 18px}
+.search-wrap input{margin:0;max-width:520px}
+.tech-icon{font-size:34px;margin-bottom:8px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.warehouse-graphic{min-height:200px}}
+
+.media-img{width:100%;height:175px;object-fit:cover;border-radius:10px;margin-bottom:12px;background:#e2e8f0}
+.media-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.media-actions a{text-decoration:none;display:inline-block}
+.media-note{font-size:12px;color:#64748b;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="loginOverlay">
+  <div class="loginBox">
+    <h2>Warehouse Technology Hub</h2>
+    <p class="small">Prototype access. Production should use Microsoft Entra ID / organizational SSO instead of a browser-stored passcode.</p>
+    <label>Work Email</label>
+    <input id="email" type="email" placeholder="name@organization.gov">
+    <label>Access Code</label>
+    <input id="code" type="password" placeholder="Enter demo code">
+    <label>Role</label>
+    <select id="role"><option>User</option><option>Supervisor</option><option>Admin</option></select>
+    <button class="btn" onclick="login()">Sign in</button>
+    <div id="loginMsg" class="small" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<header>
+ <div class="header-row">
+  <div><h1>VOC Smart Warehouse Technology Learning & Implementation Hub</h1>
+  <div class="sub">Amazon-inspired ideas adapted for a practical warehouse environment</div></div>
+  <div><span id="userBadge" class="tag">Not signed in</span> <button class="btn secondary" onclick="logout()">Sign out</button></div>
+ </div>
+ <nav>
+  <button onclick="show('home')">Dashboard</button>
+  <button onclick="show('catalog')">Technology Catalog</button>
+  <button onclick="show('assessment')">VOC Fit Check</button>
+  <button onclick="show('roadmap')">Implementation</button>
+  <button onclick="show('learning')">Learning</button>
+  <button onclick="show('sources')">Sources</button>
+  <button id="adminNav" class="hidden" onclick="show('admin')">Admin</button>
+ </nav>
+</header>
+
+<main>
+<section id="home" class="active">
+ <div class="hero">
+   <div>
+     <div class="tag">Amazon-inspired • VOC-adapted</div>
+     <h2>Smart Warehouse Technology Hub</h2>
+     <p>Learn warehouse technologies, compare practical fit, and build a phased roadmap using scanning, automation, analytics and secure Microsoft Power Platform services.</p>
+     <button class="btn" onclick="show('catalog')">Explore Technologies</button>
+   </div>
+   <div class="warehouse-graphic" aria-label="Warehouse technology graphic">
+      <div class="rack r1"></div><div class="rack r2"></div><div class="rack r3"></div>
+      <div class="box b1"></div><div class="box b2"></div><div class="box b3"></div>
+      <div class="robot"></div><div class="scanline"></div>
+      <div style="position:absolute;right:22px;top:22px;font-weight:700">Scan → Track → Move → Analyze</div>
+   </div>
+ </div>
+ <div class="notice success"><b>Purpose:</b> Learn from Amazon’s warehouse technology, evaluate what fits VOC operations, and implement lower-risk improvements before considering expensive robotics.</div>
+ <div class="grid">
+  <div class="card"><div class="small">Priority Technologies</div><div class="kpi">4</div><p>Barcode/mobile scanning, dashboards, centralized data, RFID/BLE pilot.</p></div>
+  <div class="card"><div class="small">Medium-Term Options</div><div class="kpi">3</div><p>Smart carts, computer vision QA, small conveyor/sortation.</p></div>
+  <div class="card"><div class="small">Long-Term / High Cost</div><div class="kpi">2</div><p>AMRs and large automated material movement systems.</p></div>
+  <div class="card"><div class="small">Recommended Strategy</div><div class="kpi">Pilot → Measure</div><p>Start with operational problems and measurable KPIs—not technology first.</p></div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <h3>Amazon idea → VOC adaptation</h3>
+  <table>
+   <tr><th>Amazon concept</th><th>Practical VOC adaptation</th><th>Why</th></tr>
+   <tr><td>Robots bring inventory to workers</td><td>Barcode/RFID location tracking + staged carts</td><td>Captures much of the visibility benefit without robotics cost.</td></tr>
+   <tr><td>Automated movement/sortation</td><td>Zone staging, scan checkpoints, optional small conveyor</td><td>Reduces misroutes and creates clear handoffs.</td></tr>
+   <tr><td>WMS-driven tasks</td><td>Power Apps + Dataverse/SQL + Power Automate + Power BI</td><td>Creates a lightweight warehouse operations platform using existing Microsoft skills.</td></tr>
+   <tr><td>Computer vision</td><td>Camera-assisted QA pilot after barcode process is stable</td><td>AI should improve a controlled process, not compensate for unclear data.</td></tr>
+  </table>
+ </div>
+</section>
+
+<section id="catalog">
+ <h2>Warehouse Technology Catalog</h2>
+ <div class="search-wrap">
+   <input id="techSearch" type="search" placeholder="Search by technology name, e.g. RFID, Barcode, AMR, Power BI..." oninput="filterTechnologies()">
+   <button class="btn secondary" onclick="clearTechSearch()">Clear</button>
+ </div>
+ <div id="searchCount" class="small" style="margin-bottom:10px"></div>
+ <div class="grid" id="techCards"></div>
+</section>
+
+<section id="assessment">
+ <h2>VOC Technology Fit Check</h2>
+ <div class="card">
+   <p>Score each candidate using operational value, implementation effort, security/integration fit, and measurable benefit.</p>
+   <label>Technology</label><select id="assessTech"></select>
+   <label>Operational Value (1–5)</label><input id="v" type="number" min="1" max="5" value="5">
+   <label>Ease / Low Effort (1–5)</label><input id="e" type="number" min="1" max="5" value="4">
+   <label>Security & Integration Fit (1–5)</label><input id="s" type="number" min="1" max="5" value="5">
+   <label>Measurable Benefit (1–5)</label><input id="m" type="number" min="1" max="5" value="5">
+   <button class="btn" onclick="scoreFit()">Calculate Fit</button>
+   <div id="fitResult" style="margin-top:14px"></div>
+ </div>
+</section>
+
+<section id="roadmap">
+ <h2>Implementation Roadmap</h2>
+ <div class="card">
+  <div class="step"><b>1. Define the warehouse problem and baseline.</b><br>Document current asset movement, scans, staging delays, error rates, missing records, staff time, and safety issues.</div>
+  <div class="step"><b>2. Standardize IDs and locations.</b><br>Create consistent Asset ID, barcode/QR, warehouse zone, rack/bin, status, custodian, and transaction timestamps.</div>
+  <div class="step"><b>3. Build the data foundation.</b><br>Prototype with SharePoint if needed; for stronger relational/security needs move operational records to Dataverse or SQL.</div>
+  <div class="step"><b>4. Add mobile scanning.</b><br>Use Power Apps/mobile scanners for Receive → Stage → Assign → Move → Return → QA → Complete events.</div>
+  <div class="step"><b>5. Automate workflow and exceptions.</b><br>Power Automate can notify supervisors about mismatches, overdue movements, missing scans, failed QA, or threshold conditions.</div>
+  <div class="step"><b>6. Build Power BI operational dashboards.</b><br>Track inventory by status/location, movement cycle time, exception count, QA failures, aging, and workload.</div>
+  <div class="step"><b>7. Pilot RFID/BLE where scanning is costly.</b><br>Use a limited zone and compare time, accuracy, read rate, hardware cost, interference, and maintenance against barcode scanning.</div>
+  <div class="step"><b>8. Only then test advanced automation.</b><br>Evaluate computer vision, smart carts, conveyors or AMRs if baseline data proves enough volume and labor benefit to justify them.</div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <h3>Suggested first 90-day pilot</h3>
+  <table>
+   <tr><th>Phase</th><th>Deliverable</th><th>Success measure</th></tr>
+   <tr><td>Weeks 1–2</td><td>Process map + asset/location dictionary</td><td>100% agreed IDs/status definitions</td></tr>
+   <tr><td>Weeks 3–5</td><td>Mobile scan prototype</td><td>Accurate movement transactions</td></tr>
+   <tr><td>Weeks 6–8</td><td>Exception workflow + dashboard</td><td>Faster mismatch detection</td></tr>
+   <tr><td>Weeks 9–12</td><td>Controlled pilot in one workflow/zone</td><td>Measured time/error reduction vs baseline</td></tr>
+  </table>
+ </div>
+</section>
+
+<section id="learning">
+ <h2>Continuous Learning</h2>
+ <div class="grid">
+  <div class="card"><h3>Level 1 — Foundation</h3><p>Barcode standards, warehouse process mapping, asset IDs, locations, data quality, Power BI operational KPIs.</p><div class="progress"><div style="width:75%"></div></div></div>
+  <div class="card"><h3>Level 2 — Automation</h3><p>Power Apps scanning, Dataverse relational model, Power Automate approvals/alerts, API integration.</p><div class="progress"><div style="width:55%"></div></div></div>
+  <div class="card"><h3>Level 3 — Smart Warehouse</h3><p>RFID/BLE, computer vision, IoT/environmental monitoring, AMR business-case analysis.</p><div class="progress"><div style="width:25%"></div></div></div>
+ </div>
+ <div class="card" style="margin-top:16px"><h3>Learning Record</h3>
+  <label>Topic learned</label><input id="learnTopic" placeholder="Example: RFID pilot design">
+  <label>Notes / warehouse application</label><textarea id="learnNotes" rows="4"></textarea>
+  <button class="btn" onclick="saveLearning()">Save to this browser</button>
+  <div id="learningList" style="margin-top:12px"></div>
+ </div>
+</section>
+
+<section id="sources">
+ <h2>Verified Sources & What They Support</h2>
+ <div class="card source">
+  <p><b>Amazon fulfillment centers:</b> Amazon describes coded storage pods and mobile robots that retrieve/move pods, guided using floor markers. <a href="https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-photo-tour" target="_blank" rel="noopener">About Amazon</a></p>
+  <p><b>WMS:</b> Oracle defines a WMS as software used to manage and control warehouse operations/inventory from receipt through shipment. <a href="https://docs.oracle.com/en/cloud/saas/warehouse-management/26c/owmol/definitions.html" target="_blank" rel="noopener">Oracle WMS documentation</a></p>
+  <p><b>Barcode:</b> GS1 describes fast, accurate data capture and fewer recognition errors as core barcode benefits. <a href="https://support.gs1.org/support/solutions/articles/43000734100-what-are-the-business-benefits-of-using-gs1-barcodes-" target="_blank" rel="noopener">GS1</a></p>
+  <p><b>RAIN RFID:</b> GS1 notes RFID can complement barcodes and can read tagged items without individual line-of-sight scanning, which can benefit larger inventories. <a href="https://support.gs1.org/support/solutions/articles/43000734236-what-are-the-advantages-of-rain-rfid-for-inventory-" target="_blank" rel="noopener">GS1</a></p>
+  <p><b>Dataverse security:</b> Microsoft documents security roles and granular privileges such as Read, Create, Write, Delete, Assign and Share, with access scopes. <a href="https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges" target="_blank" rel="noopener">Microsoft Learn</a></p>
+ </div>
+ <div class="notice"><b>Important:</b> Some numerical performance claims from the presentation (for example “2–3x faster picking” or “~80% less walking”) should be treated as presentation/reference estimates unless a specific authoritative source is attached to those numbers.</div>
+</section>
+
+<section id="admin">
+ <h2>Admin / Governance</h2>
+ <div class="card">
+  <h3>Prototype User Maintenance</h3>
+  <p class="small">Demo only. A production application should manage users through Entra ID groups and Dataverse security roles, not JavaScript role selectors.</p>
+  <table><tr><th>Role</th><th>Recommended access</th></tr>
+  <tr><td>User</td><td>View catalog, complete learning, submit technology assessment.</td></tr>
+  <tr><td>Supervisor</td><td>User functions + review pilot results and team exceptions.</td></tr>
+  <tr><td>Admin</td><td>Maintain technology records, reference data, access mappings and audit settings.</td></tr></table>
+  <h3>Production Security Checklist</h3>
+  <ul>
+   <li>Microsoft Entra ID SSO and MFA/Conditional Access according to organization policy.</li>
+   <li>Dataverse/SQL authorization enforced on the server/data layer.</li>
+   <li>Least-privilege roles; do not trust a role sent by the browser.</li>
+   <li>Do not place passwords, API keys, database credentials, tenant secrets, or admin codes in index.html.</li>
+   <li>Validate and sanitize all data on the server or platform connector, not only in JavaScript.</li>
+   <li>Audit create/update/delete actions and review privileged access periodically.</li>
+  </ul>
+ </div>
+</section>
+</main>
+<footer>Prototype v1.0 — Warehouse Technology Learning & Implementation Hub</footer>
+
+<script>
+const DEMO_CODE = "2612100"; // DEMO ONLY. Client-side passcodes are visible in source and are not production security.
+
+const technologies = [
+ {icon:"📦",name:"Amazon Fulfillment Process / Scanning",fit:"High",cost:"Low–Medium",phase:"Start now",
+  desc:"Amazon’s fulfillment flow uses coded storage, scanning, labeling and automated movement through the facility.",
+  voc:"Adapt with standardized Asset IDs, barcode/QR scanning, warehouse zones and scan checkpoints.",
+  image:"https://m.media-amazon.com/images/G/01/amazon-operations/fulfillment-center-tour.jpg",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-photo-tour",
+  youtube:"https://www.youtube.com/watch?v=UAKPoAn2cB0"},
+ {icon:"🤖",name:"Proteus Autonomous Mobile Robot (AMR)",fit:"Future",cost:"High",phase:"Long term",
+  desc:"Proteus is Amazon’s fully autonomous mobile robot designed to move carts while navigating open areas around employees.",
+  voc:"VOC equivalent: first measure cart travel, distance, frequency and labor effort; evaluate AMR only if the business case is strong.",
+  image:"https://assets.aboutamazon.com/dims4/default/1b9edc8/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/?url=https%3A%2F%2Fk1-prod-aboutamazon.s3.us-west-2.amazonaws.com%2Fbrightspot%2F7c%2F12%2F9f830c444e53bd8695058657084e%2Fproteus.jpg",
+  amazon:"https://www.aboutamazon.com/news/operations/10-years-of-amazon-robotics-how-robots-help-sort-packages-move-product-and-improve-safety",
+  youtube:"https://www.youtube.com/results?search_query=Amazon+Proteus+robot"},
+ {icon:"🦾",name:"Sparrow AI Robotic Arm / Computer Vision",fit:"Medium",cost:"High",phase:"Later pilot",
+  desc:"Amazon says Sparrow uses computer vision and AI to detect, select and handle individual products.",
+  voc:"VOC equivalent: begin with camera-assisted QA or barcode validation before considering robotic item handling.",
+  image:"https://assets.aboutamazon.com/dims4/default/3f2e9f3/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-introduces-sparrow-a-state-of-the-art-robot-that-handles-millions-of-diverse-products",
+  youtube:"https://www.youtube.com/results?search_query=Amazon+Sparrow+robot"},
+ {icon:"🏗️",name:"Sequoia Containerized Inventory System",fit:"Future",cost:"High",phase:"Study / long term",
+  desc:"Sequoia combines mobile robots, containerized storage, robotic arms and ergonomic employee workstations.",
+  voc:"Use the concept—not the scale: organize equipment into controlled zones/totes, track location digitally, and bring staged equipment to work areas.",
+  image:"https://assets.aboutamazon.com/dims4/default/5ea168c/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-introduces-new-robotics-solutions",
+  youtube:"https://www.youtube.com/results?search_query=Amazon+Sequoia+robotics"},
+ {icon:"🏭",name:"Conveyor & Automated Sortation",fit:"Medium",cost:"Medium–High",phase:"Evaluate",
+  desc:"Amazon fulfillment centers use conveyor and automated package movement/sortation as orders travel through packing and shipping.",
+  voc:"Consider small fixed lanes or staging chutes only for repetitive, predictable high-volume movement.",
+  image:"https://images-na.ssl-images-amazon.com/images/G/01/ops/fulfillment-center-conveyor.jpg",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-photo-tour",
+  youtube:"https://www.youtube.com/watch?v=UAKPoAn2cB0"},
+ {icon:"📊",name:"Warehouse Data & Operational Dashboards",fit:"High",cost:"Low–Medium",phase:"Start now",
+  desc:"Amazon’s next-generation fulfillment model coordinates inventory, robotics, people and flow using software, AI and operational data.",
+  voc:"Expand existing Power BI dashboards for asset location, movement, QA, exceptions, workload and readiness.",
+  image:"https://assets.aboutamazon.com/dims4/default/9a1e2c0/2147483647/strip/true/crop/2000x1125+0+0/resize/1320x743!/quality/90/",
+  amazon:"https://www.aboutamazon.com/news/operations/amazon-fulfillment-center-robotics-ai",
+  youtube:"https://www.youtube.com/watch?v=UAKPoAn2cB0"},
+ {icon:"📡",name:"RFID / BLE Asset Tracking",fit:"High pilot",cost:"Medium",phase:"Pilot",
+  desc:"RFID/BLE is a VOC adaptation idea rather than a technology established by the Amazon sources linked here.",
+  voc:"Pilot selected high-value or high-volume assets and compare read accuracy, speed and cost against barcode scanning.",
+  image:"",
+  amazon:"https://support.gs1.org/support/solutions/articles/43000734236-what-are-the-advantages-of-rain-rfid-for-inventory-",
+  youtube:"https://www.youtube.com/results?search_query=RAIN+RFID+warehouse+inventory"},
+ {icon:"⚙️",name:"Power Platform Lightweight WMS",fit:"High",cost:"Low–Medium",phase:"Start now",
+  desc:"This is a VOC adaptation, not an Amazon product: Power Apps + Dataverse/SQL + Power Automate + Power BI can provide lightweight warehouse workflow and visibility.",
+  voc:"Use for receiving, staging, assignment, movement, QA, return, exception workflow and operational reporting.",
+  image:"",
+  amazon:"https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-intro",
+  youtube:"https://www.youtube.com/results?search_query=Microsoft+Power+Apps+warehouse+inventory"}
+];
+
+function show(id){
+ document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function login(){
+ const email=document.getElementById("email").value.trim();
+ const code=document.getElementById("code").value;
+ const role=document.getElementById("role").value;
+ if(!email || !email.includes("@")){document.getElementById("loginMsg").textContent="Enter a valid work email.";return;}
+ if(code!==DEMO_CODE){document.getElementById("loginMsg").textContent="Access denied.";return;}
+ sessionStorage.setItem("whUser",JSON.stringify({email,role}));
+ applyUser();
+ document.getElementById("loginOverlay").classList.add("hidden");
+}
+function applyUser(){
+ const raw=sessionStorage.getItem("whUser"); if(!raw)return;
+ const u=JSON.parse(raw); document.getElementById("userBadge").textContent=u.email+" • "+u.role;
+ document.getElementById("adminNav").classList.toggle("hidden",u.role!=="Admin");
+}
+function logout(){sessionStorage.removeItem("whUser");location.reload()}
+function scoreFit(){
+ let nums=["v","e","s","m"].map(id=>Math.max(1,Math.min(5,Number(document.getElementById(id).value)||1)));
+ const score=nums.reduce((a,b)=>a+b,0);
+ let label=score>=17?"Strong pilot candidate":score>=13?"Evaluate with controlled pilot":"Lower priority / needs stronger business case";
+ document.getElementById("fitResult").innerHTML="<div class='notice success'><b>"+document.getElementById("assessTech").value+"</b><br>Score: "+score+"/20 — "+label+"</div>";
+}
+function saveLearning(){
+ const topic=document.getElementById("learnTopic").value.trim(), notes=document.getElementById("learnNotes").value.trim();
+ if(!topic)return;
+ const arr=JSON.parse(localStorage.getItem("warehouseLearning")||"[]");
+ arr.unshift({topic,notes,date:new Date().toLocaleDateString()}); localStorage.setItem("warehouseLearning",JSON.stringify(arr));
+ document.getElementById("learnTopic").value=""; document.getElementById("learnNotes").value=""; renderLearning();
+}
+function renderLearning(){
+ const arr=JSON.parse(localStorage.getItem("warehouseLearning")||"[]");
+ document.getElementById("learningList").innerHTML=arr.length?arr.map(x=>"<div class='notice'><b>"+escapeHtml(x.topic)+"</b> <span class='small'>"+x.date+"</span><br>"+escapeHtml(x.notes)+"</div>").join(""):"<span class='small'>No learning records saved yet.</span>";
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function renderTechCards(list){
+ const c=document.getElementById("techCards");
+ c.innerHTML=list.length?list.map(t=>`<div class="card">
+ ${t.image?`<img class="media-img" src="${t.image}" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">`:`<div class="tech-icon">${t.icon||"🔧"}</div>`}
+ <h3>${t.name}</h3>
+ <span class="tag ${t.fit.startsWith("High")?"high":t.fit==="Medium"?"medium":"future"}">${t.fit}</span><span class="tag">${t.cost}</span>
+ <p>${t.desc}</p><p><b>How VOC can adapt it:</b> ${t.voc}</p><p class="small">Recommended phase: ${t.phase}</p>
+ <div class="media-actions">
+   <a class="btn" href="${t.amazon}" target="_blank" rel="noopener">Source / Article</a>
+   <a class="btn secondary" href="${t.youtube}" target="_blank" rel="noopener">▶ Video</a>
+ </div>
+ <div class="media-note">External learning resource. Verify organizational access and procurement requirements before implementation.</div>
+ </div>`).join(""):"<div class='notice'>No technology matched your search.</div>";
+ const count=document.getElementById("searchCount"); if(count)count.textContent=`Showing ${list.length} of ${technologies.length} technologies`;
+}
+function buildCatalog(){
+ const sel=document.getElementById("assessTech");
+ renderTechCards(technologies);
+ sel.innerHTML=technologies.map(t=>`<option>${t.name}</option>`).join("");
+}
+function filterTechnologies(){
+ const q=document.getElementById("techSearch").value.trim().toLowerCase();
+ const filtered=technologies.filter(t=>(t.name+" "+t.desc+" "+t.voc+" "+t.phase).toLowerCase().includes(q));
+ renderTechCards(filtered);
+}
+function clearTechSearch(){document.getElementById("techSearch").value="";renderTechCards(technologies);}
+buildCatalog();renderLearning();applyUser();
+if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
+</script>
+</body>
+</html>
