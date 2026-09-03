@@ -157,7 +157,7 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 <body>
 <div id="loginOverlay">
   <div class="loginBox">
-    <h2>Warehouse Technology Hub</h2><p class="small"><b>Demo:</b> Enter any valid email address and access code <b>2612100</b>.</p>
+    <h2>Warehouse Technology Hub</h2><p class="notice success"><b>Demo Sign-In:</b><br>Email: <b>test@vc.gov</b><br>Access Code: <b>2612100</b><br>Role: choose User, Supervisor, or Admin.</p>
     <p class="small">Prototype access. Production should use Microsoft Entra ID / organizational SSO instead of a browser-stored passcode.</p>
     <label>Work Email</label>
     <input id="email" type="email" placeholder="name@organization.gov">
@@ -165,7 +165,7 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
     <input id="code" type="password" placeholder="Enter demo code">
     <label>Role</label>
     <select id="role"><option>User</option><option>Supervisor</option><option>Admin</option></select>
-    <button class="btn" onclick="login()">Sign in</button>
+    <button id="signInBtn" class="btn" type="button">Sign in</button>
     <div id="loginMsg" class="small" style="margin-top:10px"></div>
   </div>
 </div>
@@ -545,14 +545,28 @@ function show(id){
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function login(){
- const email=document.getElementById("email").value.trim();
- const code=document.getElementById("code").value;
- const role=document.getElementById("role").value;
- if(!email || !email.includes("@")){document.getElementById("loginMsg").textContent="Enter a valid work email.";return;}
- if(code!==DEMO_CODE){document.getElementById("loginMsg").textContent="Access denied.";return;}
+ const emailEl=document.getElementById("email");
+ const codeEl=document.getElementById("code");
+ const roleEl=document.getElementById("role");
+ const msg=document.getElementById("loginMsg");
+ const email=(emailEl?.value||"").trim();
+ const code=(codeEl?.value||"").trim();
+ const role=(roleEl?.value||"User");
+ if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+   msg.textContent="Please enter a valid email, for example test@vc.gov.";
+   return false;
+ }
+ if(code!==DEMO_CODE){
+   msg.textContent="Incorrect access code. Use 2612100 for this demo.";
+   return false;
+ }
  sessionStorage.setItem("whUser",JSON.stringify({email,role}));
  applyUser();
- document.getElementById("loginOverlay").classList.add("hidden");
+ const overlay=document.getElementById("loginOverlay");
+ if(overlay){ overlay.classList.add("hidden"); overlay.style.display="none"; }
+ msg.textContent="";
+ show("home");
+ return false;
 }
 function applyUser(){
  const raw=sessionStorage.getItem("whUser"); if(!raw)return;
@@ -629,10 +643,10 @@ const providerData={
   summary:"Focus on fulfillment robotics, physical AI, fleet coordination, cloud AI, databases and serverless integration.",
   official:"https://www.aboutamazon.com/news/operations",
   technologies:[
-   ["Next-generation Proteus","Current / expanding","Autonomous mobile robot technology for moving carts around people.",["Move Request","Route + Safety","AMR Movement","Delivery Confirmed"],"Study AMR routing and material movement before considering deployment.",["AWS Cloud","Robotics","APIs"]],"https://www.youtube.com/results?search_query=Amazon+Proteus+robot"],
-   ["Vulcan","Current","Touch-sensing robotic handling using vision and tactile sensing.",["Item / Bin","Vision + Touch","Robotic Pick","Placement Verified"],"Useful learning case for computer vision, sensing, QA and ergonomics.",["Computer Vision","AI/ML","Robotics"]],"https://www.youtube.com/results?search_query=Amazon+Vulcan+robot"],
-   ["DeepFleet","Current AI","AI foundation model concept for coordinating large robot fleets.",["Fleet Data","AI Model","Route Decision","Optimized Movement"],"Apply the concept first to warehouse movement and routing analytics.",["AWS AI","Machine Learning","Optimization"]],"https://www.youtube.com/results?search_query=Amazon+DeepFleet+AI+robots"],
-   ["Project Eluna","Agentic AI","Agentic AI for operations decision support.",["Operational Data","AI Analysis","Recommendation","Human Action"],"Potential future layer over VC dashboards for exception summaries.",["Generative AI","AI Agents","Governance"]],"https://www.youtube.com/results?search_query=Amazon+Project+Eluna+AI"],
+   ["Next-generation Proteus","Current / expanding","Autonomous mobile robot technology for moving carts around people.",["Move Request","Route + Safety","AMR Movement","Delivery Confirmed"],"Study AMR routing and material movement before considering deployment.",["AWS Cloud","Robotics","APIs"],"https://www.youtube.com/results?search_query=Amazon+Proteus+robot"],
+   ["Vulcan","Current","Touch-sensing robotic handling using vision and tactile sensing.",["Item / Bin","Vision + Touch","Robotic Pick","Placement Verified"],"Useful learning case for computer vision, sensing, QA and ergonomics.",["Computer Vision","AI/ML","Robotics"],"https://www.youtube.com/results?search_query=Amazon+Vulcan+robot"],
+   ["DeepFleet","Current AI","AI foundation model concept for coordinating large robot fleets.",["Fleet Data","AI Model","Route Decision","Optimized Movement"],"Apply the concept first to warehouse movement and routing analytics.",["AWS AI","Machine Learning","Optimization"],"https://www.youtube.com/results?search_query=Amazon+DeepFleet+AI+robots"],
+   ["Project Eluna","Agentic AI","Agentic AI for operations decision support.",["Operational Data","AI Analysis","Recommendation","Human Action"],"Potential future layer over VC dashboards for exception summaries.",["Generative AI","AI Agents","Governance"],"https://www.youtube.com/results?search_query=Amazon+Project+Eluna+AI"],
    ["Sequoia + Sparrow","Production concept","Containerized inventory plus AI-powered robotic item handling.",["Inventory","Container System","AI / Robot","Fulfillment Update"],"Study standardized containers, location identity and goods-to-person concepts.",["Data Modeling","Computer Vision","Automation"]]
   ],
   courses:[
@@ -648,11 +662,11 @@ const providerData={
   summary:"Focus on Power Platform, secure relational data, automation, analytics, Copilot Studio and Microsoft Foundry AI agents.",
   official:"https://learn.microsoft.com/en-us/power-platform/",
   technologies:[
-   ["Power Apps","Core platform","Low-code platform for operational and mobile business apps.",["User / Scan","Power App","Business Logic","Dataverse Record"],"Build receiving, assignment, QA and warehouse transaction apps.",["Power Apps","Power Fx","ALM"]],"https://www.youtube.com/results?search_query=Microsoft+Power+Apps+official+tutorial"],
-   ["Dataverse","Core data platform","Secure relational data platform with tables, relationships and role-based access.",["Operational Event","Validation","Dataverse","Trusted Data"],"Use as structured backend for assets, assignments, movements and audit history.",["Data Modeling","Security Roles","Web API"]],"https://www.youtube.com/results?search_query=Microsoft+Dataverse+official+tutorial"],
-   ["Power Automate","Core automation","Workflow and event automation across Microsoft and connected systems.",["Trigger","Validate / Route","Action","Notify / Update"],"Automate approvals, duplicate checks, alerts and status changes.",["Cloud Flows","Approvals","Error Handling"]],"https://www.youtube.com/results?search_query=Microsoft+Power+Automate+official+tutorial"],
-   ["Copilot Studio","AI agents","Platform for building copilots and agents connected to business data and actions.",["User Intent","Agent","Knowledge + Tools","Action / Answer"],"Potential employee support assistant for warehouse procedures and status.",["Copilot Studio","Agent Actions","Governance"]],"https://www.youtube.com/results?search_query=Microsoft+Copilot+Studio+official+tutorial"],
-   ["Microsoft Foundry / Azure AI Agents","Strategic AI","Microsoft AI development direction for models, generative AI apps and agents.",["Data / Prompt","Model / Agent","Tools / API","Governed Result"],"Future AI-assisted exception analysis, knowledge retrieval and operational agents.",["Foundry","AI Agents","Evaluation"]],"https://www.youtube.com/results?search_query=Microsoft+Foundry+AI+Agents+tutorial"],
+   ["Power Apps","Core platform","Low-code platform for operational and mobile business apps.",["User / Scan","Power App","Business Logic","Dataverse Record"],"Build receiving, assignment, QA and warehouse transaction apps.",["Power Apps","Power Fx","ALM"],"https://www.youtube.com/results?search_query=Microsoft+Power+Apps+official+tutorial"],
+   ["Dataverse","Core data platform","Secure relational data platform with tables, relationships and role-based access.",["Operational Event","Validation","Dataverse","Trusted Data"],"Use as structured backend for assets, assignments, movements and audit history.",["Data Modeling","Security Roles","Web API"],"https://www.youtube.com/results?search_query=Microsoft+Dataverse+official+tutorial"],
+   ["Power Automate","Core automation","Workflow and event automation across Microsoft and connected systems.",["Trigger","Validate / Route","Action","Notify / Update"],"Automate approvals, duplicate checks, alerts and status changes.",["Cloud Flows","Approvals","Error Handling"],"https://www.youtube.com/results?search_query=Microsoft+Power+Automate+official+tutorial"],
+   ["Copilot Studio","AI agents","Platform for building copilots and agents connected to business data and actions.",["User Intent","Agent","Knowledge + Tools","Action / Answer"],"Potential employee support assistant for warehouse procedures and status.",["Copilot Studio","Agent Actions","Governance"],"https://www.youtube.com/results?search_query=Microsoft+Copilot+Studio+official+tutorial"],
+   ["Microsoft Foundry / Azure AI Agents","Strategic AI","Microsoft AI development direction for models, generative AI apps and agents.",["Data / Prompt","Model / Agent","Tools / API","Governed Result"],"Future AI-assisted exception analysis, knowledge retrieval and operational agents.",["Foundry","AI Agents","Evaluation"],"https://www.youtube.com/results?search_query=Microsoft+Foundry+AI+Agents+tutorial"],
    ["Power BI","Operational analytics","Analytics for dashboards, KPIs and exception monitoring.",["Operational Data","Model","Dashboard","Decision"],"Continue using dashboards as the visibility and exception layer.",["Power Query","DAX","Data Modeling"]]
   ],
   courses:[
@@ -668,12 +682,12 @@ const providerData={
   summary:"Focus on enterprise workflows, asset/IT operations, AI agents, workflow data, app development and AI governance.",
   official:"https://www.servicenow.com/platform.html",
   technologies:[
-   ["ServiceNow AI Platform","Current platform","Unified platform combining AI, data, workflows and security.",["Enterprise Data","AI + Workflow","Governed Action","Business Outcome"],"Important for VC's transition from Cherwell and future enterprise workflow integration.",["Now Platform","Data Model","Workflow Architecture"]],"https://www.youtube.com/results?search_query=ServiceNow+AI+Platform+official"],
-   ["AI Agents / AI Agent Studio","Current AI","AI agents that execute workflow tasks and can be built in AI Agent Studio.",["Goal / Request","AI Agent","Tools + Workflow","Action Completed"],"Potential use for incident triage, asset exceptions and guided operations.",["AI Agent Studio","Agent Governance","APIs"]],"https://www.youtube.com/results?search_query=ServiceNow+AI+Agent+Studio+official"],
-   ["Workflow Data Fabric","Current data layer","Connects and contextualizes governed data from multiple systems.",["Multiple Systems","Connect","Context + Governance","Actionable Data"],"Relevant where warehouse data spans ServiceNow, Power Platform and other systems.",["Data Integration","Governance","Architecture"]],"https://www.youtube.com/results?search_query=ServiceNow+Workflow+Data+Fabric+official"],
-   ["Flow Designer","Core automation","Low-code workflow automation for ServiceNow processes.",["Trigger","Flow Logic","Action / Approval","Record Updated"],"Use for incident, request, asset and approval processes that belong in ServiceNow.",["Flow Designer","Business Rules","Integration"]],"https://www.youtube.com/results?search_query=ServiceNow+Flow+Designer+official+tutorial"],
-   ["App Engine Studio","Low-code app dev","Low-code environment for custom enterprise applications.",["Requirement","App + Data","Workflow","Operational App"],"Evaluate internal apps that should remain inside ServiceNow governance.",["App Engine","Tables / Forms","Security"]],"https://www.youtube.com/results?search_query=ServiceNow+App+Engine+Studio+official"],
-   ["AI Control Tower","AI governance","Central oversight for enterprise AI models, agents and workflows.",["AI Inventory","Policy + Monitor","Risk / Performance","Governed AI"],"Relevant as VC evaluates Microsoft, AWS and ServiceNow AI ecosystems.",["AI Governance","Risk Controls","Monitoring"]],"https://www.youtube.com/results?search_query=ServiceNow+AI+Control+Tower+official"],
+   ["ServiceNow AI Platform","Current platform","Unified platform combining AI, data, workflows and security.",["Enterprise Data","AI + Workflow","Governed Action","Business Outcome"],"Important for VC's transition from Cherwell and future enterprise workflow integration.",["Now Platform","Data Model","Workflow Architecture"],"https://www.youtube.com/results?search_query=ServiceNow+AI+Platform+official"],
+   ["AI Agents / AI Agent Studio","Current AI","AI agents that execute workflow tasks and can be built in AI Agent Studio.",["Goal / Request","AI Agent","Tools + Workflow","Action Completed"],"Potential use for incident triage, asset exceptions and guided operations.",["AI Agent Studio","Agent Governance","APIs"],"https://www.youtube.com/results?search_query=ServiceNow+AI+Agent+Studio+official"],
+   ["Workflow Data Fabric","Current data layer","Connects and contextualizes governed data from multiple systems.",["Multiple Systems","Connect","Context + Governance","Actionable Data"],"Relevant where warehouse data spans ServiceNow, Power Platform and other systems.",["Data Integration","Governance","Architecture"],"https://www.youtube.com/results?search_query=ServiceNow+Workflow+Data+Fabric+official"],
+   ["Flow Designer","Core automation","Low-code workflow automation for ServiceNow processes.",["Trigger","Flow Logic","Action / Approval","Record Updated"],"Use for incident, request, asset and approval processes that belong in ServiceNow.",["Flow Designer","Business Rules","Integration"],"https://www.youtube.com/results?search_query=ServiceNow+Flow+Designer+official+tutorial"],
+   ["App Engine Studio","Low-code app dev","Low-code environment for custom enterprise applications.",["Requirement","App + Data","Workflow","Operational App"],"Evaluate internal apps that should remain inside ServiceNow governance.",["App Engine","Tables / Forms","Security"],"https://www.youtube.com/results?search_query=ServiceNow+App+Engine+Studio+official"],
+   ["AI Control Tower","AI governance","Central oversight for enterprise AI models, agents and workflows.",["AI Inventory","Policy + Monitor","Risk / Performance","Governed AI"],"Relevant as VC evaluates Microsoft, AWS and ServiceNow AI ecosystems.",["AI Governance","Risk Controls","Monitoring"],"https://www.youtube.com/results?search_query=ServiceNow+AI+Control+Tower+official"],
    ["Process Mining","Process improvement","Analyzes actual workflow execution to identify bottlenecks.",["Workflow History","Process Analysis","Bottleneck","Improvement"],"Useful for measuring asset, incident, approval and support workflows.",["Process Mining","KPI Design","Continuous Improvement"]]
   ],
   courses:[
@@ -805,69 +819,12 @@ function renderClassNotes(){
  el.innerHTML=arr.length?arr.map(x=>`<div class="notice"><b>${escapeHtml(x.t)}</b> <span class="small">${x.d}</span><br>${escapeHtml(x.n)}</div>`).join(""):"<span class='small'>No class notes saved yet.</span>";
 }
 
+document.getElementById("signInBtn")?.addEventListener("click",login);
+document.getElementById("code")?.addEventListener("keydown",function(e){
+ if(e.key==="Enter"){e.preventDefault();login();}
+});
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
-</script>
-
-<script>
-/* v17 robust demo sign-in fix */
-(function(){
-  const DEMO_CODE="2612100";
-
-  function findLoginElements(){
-    const inputs=[...document.querySelectorAll('input')];
-    const email=inputs.find(x=>/email|user/i.test((x.id||"")+" "+(x.name||"")+" "+(x.placeholder||""))) || inputs.find(x=>x.type==="email");
-    const code=inputs.find(x=>/code|password|access/i.test((x.id||"")+" "+(x.name||"")+" "+(x.placeholder||""))) || inputs.find(x=>x.type==="password");
-    const btn=[...document.querySelectorAll('button,input[type="button"],input[type="submit"]')].find(x=>/sign.?in|login|enter/i.test((x.textContent||x.value||"")));
-    return {email,code,btn};
-  }
-
-  function demoSignIn(ev){
-    if(ev) ev.preventDefault();
-    const {email,code}=findLoginElements();
-    const emailVal=(email?.value||"").trim();
-    const codeVal=(code?.value||"").trim();
-    let msg=document.getElementById("loginError")||document.getElementById("loginMsg")||document.querySelector(".login-error");
-
-    if(!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){
-      if(msg){msg.textContent="Please enter a valid work email.";msg.style.display="block";}
-      else alert("Please enter a valid work email.");
-      return false;
-    }
-    if(codeVal!==DEMO_CODE){
-      if(msg){msg.textContent="Demo access code is 2612100.";msg.style.display="block";}
-      else alert("Demo access code is 2612100.");
-      return false;
-    }
-
-    localStorage.setItem("vcWarehouseDemoUser",emailVal);
-    const overlay=document.getElementById("loginOverlay")||document.querySelector(".login-overlay")||document.querySelector(".login");
-    if(overlay) overlay.style.display="none";
-    document.body.classList.remove("locked");
-    if(msg) msg.style.display="none";
-
-    // Make sure home is visible.
-    if(typeof show==="function") show("home");
-    return false;
-  }
-
-  window.demoSignIn=demoSignIn;
-
-  document.addEventListener("DOMContentLoaded",function(){
-    const {btn,code}=findLoginElements();
-    if(btn){
-      btn.onclick=demoSignIn;
-      btn.type="button";
-    }
-    if(code){
-      code.addEventListener("keydown",function(e){
-        if(e.key==="Enter"){e.preventDefault();demoSignIn(e);}
-      });
-    }
-    const form=btn?.closest("form");
-    if(form) form.onsubmit=demoSignIn;
-  });
-})();
 </script>
 
 </body>
