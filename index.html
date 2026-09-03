@@ -157,7 +157,7 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 <body>
 <div id="loginOverlay">
   <div class="loginBox">
-    <h2>Warehouse Technology Hub</h2>
+    <h2>Warehouse Technology Hub</h2><p class="small"><b>Demo:</b> Enter any valid email address and access code <b>2612100</b>.</p>
     <p class="small">Prototype access. Production should use Microsoft Entra ID / organizational SSO instead of a browser-stored passcode.</p>
     <label>Work Email</label>
     <input id="email" type="email" placeholder="name@organization.gov">
@@ -808,5 +808,67 @@ function renderClassNotes(){
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
 </script>
+
+<script>
+/* v17 robust demo sign-in fix */
+(function(){
+  const DEMO_CODE="2612100";
+
+  function findLoginElements(){
+    const inputs=[...document.querySelectorAll('input')];
+    const email=inputs.find(x=>/email|user/i.test((x.id||"")+" "+(x.name||"")+" "+(x.placeholder||""))) || inputs.find(x=>x.type==="email");
+    const code=inputs.find(x=>/code|password|access/i.test((x.id||"")+" "+(x.name||"")+" "+(x.placeholder||""))) || inputs.find(x=>x.type==="password");
+    const btn=[...document.querySelectorAll('button,input[type="button"],input[type="submit"]')].find(x=>/sign.?in|login|enter/i.test((x.textContent||x.value||"")));
+    return {email,code,btn};
+  }
+
+  function demoSignIn(ev){
+    if(ev) ev.preventDefault();
+    const {email,code}=findLoginElements();
+    const emailVal=(email?.value||"").trim();
+    const codeVal=(code?.value||"").trim();
+    let msg=document.getElementById("loginError")||document.getElementById("loginMsg")||document.querySelector(".login-error");
+
+    if(!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){
+      if(msg){msg.textContent="Please enter a valid work email.";msg.style.display="block";}
+      else alert("Please enter a valid work email.");
+      return false;
+    }
+    if(codeVal!==DEMO_CODE){
+      if(msg){msg.textContent="Demo access code is 2612100.";msg.style.display="block";}
+      else alert("Demo access code is 2612100.");
+      return false;
+    }
+
+    localStorage.setItem("vcWarehouseDemoUser",emailVal);
+    const overlay=document.getElementById("loginOverlay")||document.querySelector(".login-overlay")||document.querySelector(".login");
+    if(overlay) overlay.style.display="none";
+    document.body.classList.remove("locked");
+    if(msg) msg.style.display="none";
+
+    // Make sure home is visible.
+    if(typeof show==="function") show("home");
+    return false;
+  }
+
+  window.demoSignIn=demoSignIn;
+
+  document.addEventListener("DOMContentLoaded",function(){
+    const {btn,code}=findLoginElements();
+    if(btn){
+      btn.onclick=demoSignIn;
+      btn.type="button";
+    }
+    if(code){
+      code.addEventListener("keydown",function(e){
+        if(e.key==="Enter"){e.preventDefault();demoSignIn(e);}
+      });
+    }
+    const form=btn?.closest("form");
+    if(form) form.onsubmit=demoSignIn;
+  });
+})();
+</script>
+
 </body>
 </html>
