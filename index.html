@@ -178,6 +178,46 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 
 .freshness-note{margin:8px 0;padding:9px 11px;border:1px solid #86efac;background:#f0fdf4;border-radius:9px;font-size:12px;color:#166534}
 .stale-hidden{display:none!important}
+
+/* v26 warehouse technology login */
+#loginOverlay{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(37,99,235,.18),transparent 26%),
+    radial-gradient(circle at 88% 78%,rgba(14,116,144,.15),transparent 25%),
+    linear-gradient(135deg,#07111f 0%,#10243e 52%,#07111f 100%);
+}
+#loginOverlay .login-card{
+  max-width:1000px!important;width:min(94vw,1000px)!important;padding:0!important;
+  overflow:hidden;border:1px solid rgba(255,255,255,.2);box-shadow:0 24px 70px rgba(0,0,0,.38);
+}
+.warehouse-login-shell{display:grid;grid-template-columns:1.15fr .85fr;min-height:510px;background:#fff}
+.warehouse-hero{position:relative;padding:34px;color:#fff;background:linear-gradient(150deg,#0f2743,#173f67);overflow:hidden}
+.warehouse-hero h1{font-size:31px;line-height:1.08;margin:12px 0 8px}
+.warehouse-hero p{color:#dbeafe;max-width:540px}
+.warehouse-kicker{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:900;color:#93c5fd}
+.warehouse-scene{position:absolute;left:0;right:0;bottom:0;height:270px}
+.wh-floor{position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(#52677e,#334155)}
+.wh-rack{position:absolute;bottom:62px;width:92px;height:154px;border:7px solid #dbeafe;border-top-width:9px}
+.wh-rack:before,.wh-rack:after{content:"";position:absolute;left:0;right:0;height:6px;background:#dbeafe}
+.wh-rack:before{top:47px}.wh-rack:after{top:98px}
+.wh-rack.r1{left:34px}.wh-rack.r2{left:154px}.wh-rack.r3{right:35px}
+.wh-box{position:absolute;width:26px;height:24px;background:#f59e0b;border:2px solid #fbbf24;border-radius:2px}
+.wh-robot{position:absolute;bottom:65px;left:47%;width:82px;height:34px;background:#38bdf8;border-radius:8px 8px 5px 5px;box-shadow:0 0 22px rgba(56,189,248,.5)}
+.wh-robot:before,.wh-robot:after{content:"";position:absolute;bottom:-7px;width:16px;height:16px;border-radius:50%;background:#0f172a;border:3px solid #94a3b8}
+.wh-robot:before{left:10px}.wh-robot:after{right:10px}
+.wh-scan{position:absolute;bottom:110px;left:55%;width:2px;height:95px;background:#22d3ee;transform:rotate(22deg);box-shadow:0 0 12px #22d3ee}
+.wh-chip{position:absolute;right:142px;top:70px;width:72px;height:72px;border:2px solid #60a5fa;border-radius:12px;display:grid;place-items:center;font-weight:900;color:#bfdbfe;background:rgba(15,23,42,.45)}
+.wh-data{position:absolute;right:42px;top:75px;width:76px}
+.wh-data i{display:block;height:6px;margin:8px 0;border-radius:6px;background:#38bdf8}
+.login-form-side{padding:38px 34px;display:flex;flex-direction:column;justify-content:center}
+.login-form-side h2{margin:0 0 6px;font-size:25px}
+.login-form-side .secure-caption{font-size:12px;color:#64748b;margin-bottom:20px}
+.login-tech-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.login-tech-row span{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eff6ff;color:#1e40af}
+@media(max-width:760px){
+ .warehouse-login-shell{grid-template-columns:1fr}.warehouse-hero{min-height:300px}
+ .warehouse-scene{height:200px}.login-form-side{padding:28px 22px}
+}
 </style>
 
 <script>
