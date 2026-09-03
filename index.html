@@ -166,6 +166,11 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .issue-meta{font-size:12px;color:#64748b;margin:4px 0}
 .trouble-tip{background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:10px;margin-top:10px}
 @media(max-width:850px){.trouble-grid{grid-template-columns:1fr}}
+
+/* v22 source freshness labels */
+.source-meta{margin-top:8px;padding-top:8px;border-top:1px dashed #cbd5e1;font-size:12px;color:#475569}
+.source-date{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:#eef2f7;font-weight:700;color:#334155}
+.source-reviewed{font-size:11px;color:#64748b;margin-top:4px}
 </style>
 
 <script>
@@ -432,11 +437,11 @@ function VC_LOGIN_V19(){
  <h2>Technology Watch & Update Review</h2>
  <div class="notice success">
   <b>Purpose:</b> Review important technology changes across Amazon / AWS, Microsoft, and ServiceNow. The detailed cards below currently contain the Amazon warehouse research snapshot; use the Multi-Platform Hub for Microsoft and ServiceNow technology reviews. 
-  <br><span class="small">Research snapshot built from Amazon sources reviewed September 3, 2026. This standalone HTML cannot automatically fetch live web updates; use the official links below or a scheduled monitor for ongoing checks.</span>
+  <br><span class="small">Research snapshot built from Amazon sources reviewed 9/3/26 11:05 AM. This standalone HTML cannot automatically fetch live web updates; use the official links below or a scheduled monitor for ongoing checks.</span>
  </div>
  <div class="card" style="margin-bottom:16px">
   <div class="grid">
-   <div><div class="small">Last research review</div><div class="kpi" style="font-size:22px">Sep 3, 2026</div></div>
+   <div><div class="small">Last research review</div><div class="kpi" style="font-size:22px">9/3/26 11:05 AM</div></div>
    <div><div class="small">Technologies being watched</div><div class="kpi">20+</div></div>
    <div><div class="small">VC approach</div><div class="kpi" style="font-size:22px">Learn → Test → Measure → Improve</div></div>
   </div>
@@ -464,7 +469,7 @@ function VC_LOGIN_V19(){
   <button type="button" onclick="show('providerhub');selectProvider('microsoft')">Microsoft Learning</button>
   <button type="button" onclick="show('providerhub');selectProvider('servicenow')">ServiceNow Learning</button>
  </div><div class="notice success"><b>New Transaction Learning:</b> Added SQL database transactions and warehouse transaction processing. Focus areas: ACID, COMMIT/ROLLBACK, concurrency, error recovery, audit history, and how receiving → movement → QA → return transactions should update trusted warehouse records.</div>
- <div class="notice"><b>Class List Review:</b> Updated September 3, 2026 using current Microsoft Learn and AWS Training/Certification resources. Because course names, certifications and AI platforms change, this list should be reviewed regularly rather than treated as permanent.</div>
+ <div class="notice"><b>Class List Review:</b> Updated 9/3/26 11:05 AM using current Microsoft Learn and AWS Training/Certification resources. Because course names, certifications and AI platforms change, this list should be reviewed regularly rather than treated as permanent.</div>
  <div class="notice success"><b>Goal:</b> Maintain a focused Top 27 learning roadmap tied to Microsoft, AWS/Amazon AI, Power Platform, cloud, databases, programming and future smart-warehouse technology. Each class now has its own learning tracker. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
  <div class="card">
   <div class="grid">
@@ -572,6 +577,7 @@ function VC_LOGIN_V19(){
   </ul>
  </div>
 </section>
+<div class="source-meta" style="margin:18px"><b>Updated:</b> <span class="source-date">9/3/26 11:05 AM</span> • Amazon/AWS, Microsoft, ServiceNow and learning links should be periodically rechecked because provider content can change.</div>
 </main>
 <footer>Prototype v1.0 — Warehouse Technology Learning & Implementation Hub</footer>
 
@@ -782,7 +788,7 @@ function clearTechSearch(){document.getElementById("techSearch").value="";render
 
 const providerData={
  amazon:{
-  title:"Amazon / AWS — Robotics, AI, Cloud & Fulfillment",icon:"📦",reviewed:"September 3, 2026",
+  title:"Amazon / AWS — Robotics, AI, Cloud & Fulfillment",icon:"📦",reviewed:"9/3/26 11:05 AM",
   summary:"Focus on fulfillment robotics, physical AI, fleet coordination, cloud AI, databases and serverless integration.",
   official:"https://www.aboutamazon.com/news/operations",
   technologies:[
@@ -801,7 +807,7 @@ const providerData={
   ]
  },
  microsoft:{
-  title:"Microsoft — Power Platform, Dataverse, AI Agents & Analytics",icon:"🪟",reviewed:"September 3, 2026",
+  title:"Microsoft — Power Platform, Dataverse, AI Agents & Analytics",icon:"🪟",reviewed:"9/3/26 11:05 AM",
   summary:"Focus on Power Platform, secure relational data, automation, analytics, Copilot Studio and Microsoft Foundry AI agents.",
   official:"https://learn.microsoft.com/en-us/power-platform/",
   technologies:[
@@ -821,7 +827,7 @@ const providerData={
   ]
  },
  servicenow:{
-  title:"ServiceNow — AI Platform, Workflows, Data & Enterprise Operations",icon:"🟢",reviewed:"September 3, 2026",
+  title:"ServiceNow — AI Platform, Workflows, Data & Enterprise Operations",icon:"🟢",reviewed:"9/3/26 11:05 AM",
   summary:"Focus on enterprise workflows, asset/IT operations, AI agents, workflow data, app development and AI governance.",
   official:"https://www.servicenow.com/platform.html",
   technologies:[
@@ -866,8 +872,12 @@ function renderProvider(){
    ${t[6]?`<a class="btn secondary" href="${t[6]}" target="_blank" rel="noopener">▶ Watch / Find Video</a>`:""}
   </div>
  </div>`).join("");
- const courses=p.courses.map((c,i)=>`<div class="provider-course"><b>${i+1}. <a class="class-link" href="${c[1]}" target="_blank" rel="noopener">${c[0]} ↗</a></b> <a class="class-link" style="margin-left:10px" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' official tutorial')}" target="_blank" rel="noopener">▶ Video</a></div>`).join("");
- el.innerHTML=`<div class="provider-banner"><div style="display:flex;align-items:center"><span class="provider-logo">${p.icon}</span><div><h3 style="margin:0">${p.title}</h3><div class="small">Research review: ${p.reviewed}</div></div></div><p>${p.summary}</p><a class="btn" href="${p.official}" target="_blank" rel="noopener">Official Provider Source</a></div><div class="provider-grid">${cards}</div><div class="card" style="margin-top:16px"><h3>Recommended Learning</h3>${courses}</div>`;
+ const courses=p.courses.map((c,i)=>`<div class="provider-course"><b>${i+1}. <a class="class-link" href="${c[1]}" target="_blank" rel="noopener">${c[0]} ↗</a></b> <a class="class-link" style="margin-left:10px" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' official tutorial')}" target="_blank" rel="noopener">▶ Video</a><div class="source-meta"><b>Source:</b> Official/provider learning resource <span class="source-date">Updated ${p.reviewed}</span></div></div>`).join("");
+ el.innerHTML=`<div class="provider-banner"><div style="display:flex;align-items:center"><span class="provider-logo">${p.icon}</span><div><h3 style="margin:0">${p.title}</h3><div class="small">Updated: ${p.reviewed}</div></div></div><p>${p.summary}</p><a class="btn" href="${p.official}" target="_blank" rel="noopener">Official Provider Source</a>
+   <div class="source-meta"><b>Source:</b> Official ${p.title.split("—")[0].trim()} resource
+   <span class="source-date">Updated ${p.reviewed}</span>
+   <div class="source-reviewed">Check source for latest update.</div></div>
+  </div><div class="provider-grid">${cards}</div><div class="card" style="margin-top:16px"><h3>Recommended Learning</h3>${courses}</div>`;
 }
 
 const warehouseCourses=[
@@ -912,6 +922,7 @@ function renderCourses(){
      <div>
        <a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a>
        <div class="small">${c.why}</div>
+       <div class="source-meta"><b>Learning source:</b> ${new URL(c.url).hostname.replace("www.","")} <span class="source-date">Updated 9/3/26 11:05 AM</span></div>
        <div class="learn-track">
          <div class="learn-track-grid">
            <label>Status</label>
@@ -1038,6 +1049,7 @@ function renderIssueSearch(d){
   el.innerHTML=`<div class="solution-card">
     <h3>Search prepared</h3>
     <p><b>${escapeHtml(d.title||d.area)}</b></p>
+    <div class="source-meta"><b>Search created:</b> <span class="source-date">${new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",year:"2-digit",hour:"numeric",minute:"2-digit"})}</span> • Check source for latest update.</div>
     <div class="search-actions">${links.map(x=>`<a class="btn secondary" href="${x[1]}" target="_blank" rel="noopener">${x[0]} ↗</a>`).join("")}</div>
     <p class="small">Open one or more sources, test the proposed fix, then save the working solution in the issue history below.</p>
   </div>`;
