@@ -325,36 +325,43 @@ function VC_LOGIN_V28(){
 </style>
 
 
-
 <style id="issueLogResponsiveFix">
-.issue-log-card{width:100%;box-sizing:border-box;overflow:visible}
-.issue-card-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px}
-.issue-detail-card{border:1px solid #dbe3ee;border-radius:14px;background:#fff;box-shadow:0 4px 14px rgba(15,23,42,.06);overflow:hidden}
-.issue-card-head{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;background:#f8fafc;border-bottom:1px solid #e5e7eb}
-.issue-card-body{padding:15px 16px}
-.issue-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
-.issue-field.full{grid-column:1/-1}
-.issue-label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:4px}
-.issue-value{font-size:13px;color:#1e293b;line-height:1.5;overflow-wrap:anywhere;word-break:break-word}
-.issue-value.issue-title{font-size:15px;font-weight:800;color:#0f172a}
-.issue-id{font-size:12px;font-weight:900;color:#0f172a;overflow-wrap:anywhere}
-.issue-date{font-size:11px;color:#64748b;text-align:right}
-.issue-note{width:100%;min-height:92px;resize:vertical;padding:9px 10px;border:1px solid #cbd5e1;border-radius:9px;box-sizing:border-box;font:inherit}
-.issue-select{width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:white}
-.issue-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.issue-mini-btn{border:0;border-radius:8px;padding:8px 11px;cursor:pointer;font-weight:800;background:#e8f1ff;color:#1359a5}
-.issue-mini-btn.primary{background:#1359a5;color:white}
-.issue-mini-btn.danger{background:#fee2e2;color:#991b1b}
-@media(max-width:900px){.issue-card-list{grid-template-columns:1fr}}
-@media(max-width:560px){
-  .issue-meta-grid{grid-template-columns:1fr}
-  .issue-field.full{grid-column:1}
-  .issue-card-head{flex-direction:column}
-  .issue-date{text-align:left}
-  .issue-card-actions .issue-mini-btn{width:100%}
+/* Issue Log readability fix */
+.issue-log-card{overflow:visible;width:100%;box-sizing:border-box}
+#issueLogTable{width:100%;border-collapse:collapse;table-layout:fixed}
+#issueLogTable th,#issueLogTable td{padding:10px 8px;border-bottom:1px solid #e5e7eb;vertical-align:top;text-align:left;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+#issueLogTable th{background:#f8fafc;color:#0f172a;font-size:12px;position:sticky;top:0;z-index:1}
+#issueLogTable td{font-size:12px;color:#334155}
+#issueLogTable th:nth-child(1){width:10%}
+#issueLogTable th:nth-child(2){width:11%}
+#issueLogTable th:nth-child(3){width:13%}
+#issueLogTable th:nth-child(4){width:19%}
+#issueLogTable th:nth-child(5){width:10%}
+#issueLogTable th:nth-child(6){width:18%}
+#issueLogTable th:nth-child(7){width:10%}
+#issueLogTable th:nth-child(8){width:9%}
+#issueLogTable .issue-note{width:100%;min-width:0;box-sizing:border-box;min-height:72px}
+#issueLogTable .issue-select{width:100%;max-width:100%;box-sizing:border-box}
+#issueLogTable .issue-mini-btn{display:block;width:100%;margin:3px 0;white-space:normal}
+
+/* On smaller screens, turn each table row into an easy-to-read card. */
+@media(max-width:1150px){
+  .issue-log-card{background:transparent;border:0;padding:0;box-shadow:none}
+  #issueLogTable{display:block;width:100%;table-layout:auto}
+  #issueLogTable thead{display:none}
+  #issueLogTable tbody{display:grid;grid-template-columns:1fr;gap:14px;width:100%}
+  #issueLogTable tr{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#fff;border:1px solid #dbe3ee;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.05)}
+  #issueLogTable td{display:block;width:auto!important;max-width:none!important;padding:11px 12px;border-bottom:1px solid #edf2f7;min-width:0}
+  #issueLogTable td::before{content:attr(data-label);display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#64748b;margin-bottom:4px}
+  #issueLogTable td:nth-child(4),#issueLogTable td:nth-child(6),#issueLogTable td:nth-child(7),#issueLogTable td:nth-child(8){grid-column:1/-1}
+  #issueLogTable .issue-note{min-height:78px}
+  #issueLogTable td:nth-child(7) .issue-mini-btn,#issueLogTable td:nth-child(8) .issue-mini-btn{display:inline-block;width:auto;margin:3px 5px 3px 0}
+}
+@media(max-width:650px){
+  #issueLogTable tr{grid-template-columns:1fr}
+  #issueLogTable td{grid-column:1/-1!important}
 }
 </style>
-
 
 </head>
 <body>
@@ -415,7 +422,7 @@ function VC_LOGIN_V28(){
   <button onclick="show('sources')">Sources</button>
   <button id="adminNav" class="hidden" onclick="show('admin')">Admin</button>
   <button onclick="show('help')">Help & Purpose</button>
-<button type="button" class="nav-btn" data-page="issue-log" onclick="VC_OPEN_ISSUE_LOG(); return false;">Issue Log</button></nav>
+<button class="nav-btn" data-page="issue-log" onclick="showPage('issue-log')">Issue Log</button></nav>
 </header>
 
 <main>
@@ -638,20 +645,26 @@ function VC_LOGIN_V28(){
   </div>
 
   <div style="margin:8px 0 10px;color:#64748b;font-size:12px;">Issue records resize automatically. On smaller screens, each issue displays as a full-width card so all details remain visible.</div>
-  
-<div class="card issue-log-card">
-  <div style="margin-bottom:12px;">
-    <h3 style="margin:0;">Submitted Issues</h3>
-    <p style="margin:5px 0 0;color:#64748b;font-size:12px;">
-      Each issue is displayed as a full detail card. No horizontal scrolling is required.
-    </p>
+  <div class="card issue-log-card">
+    <table id="issueLogTable">
+      <thead>
+        <tr>
+          <th>Issue ID</th>
+          <th>Date</th>
+          <th>Platform / Area</th>
+          <th>Issue</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th>Training</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="issueLogTableBody"></tbody>
+    </table>
+    <div id="issueLogEmpty" style="padding:22px;text-align:center;color:#64748b;display:none;">
+      No issues yet. Submit an issue from Development Troubleshooter and it will appear here.
+    </div>
   </div>
-  <div id="issueLogCards" class="issue-card-list"></div>
-  <div id="issueLogEmpty" style="padding:22px;text-align:center;color:#64748b;display:none;">
-    No issues yet. Submit an issue from Development Troubleshooter and it will appear here.
-  </div>
-</div>
-
 
   
 <div class="card" style="margin-top:16px;overflow:auto;">
@@ -1624,77 +1637,44 @@ if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").clas
     return d.toLocaleString('en-US',{month:'numeric',day:'numeric',year:'2-digit',hour:'numeric',minute:'2-digit'});
   }
   window.renderIssueLogTable = function(){
-    const wrap = document.getElementById('issueLogCards');
+    const body = document.getElementById('issueLogTableBody');
     const empty = document.getElementById('issueLogEmpty');
-    if (!wrap) return;
+    if (!body) return;
     const items = getIssueLogItems();
-    wrap.innerHTML = '';
-    if (empty) empty.style.display = items.length ? 'none' : 'block';
-
-    items.forEach((it, idx)=>{
+    body.innerHTML = '';
+    empty.style.display = items.length ? 'none' : 'block';
+    items.forEach((it,idx)=>{
       const id = it.id || it.issueId || ('ISS-' + String(idx+1).padStart(3,'0'));
       const platform = it.provider || it.platform || '';
       const area = it.area || it.category || '';
       const issue = it.issue || it.title || it.problem || it.error || '';
-      const problem = it.problem || it.error || '';
       const status = it.status || 'Open';
       const note = it.note || it.notes || '';
-      const tried = it.tried || '';
       const date = it.updatedAt || it.createdAt || it.date || '';
-
-      const card = document.createElement('div');
-      card.className = 'issue-detail-card';
-      card.innerHTML = `
-        <div class="issue-card-head">
-          <div><span class="issue-label">Issue ID</span><div class="issue-id">${esc(id)}</div></div>
-          <div class="issue-date">${shortDate(date)}</div>
-        </div>
-        <div class="issue-card-body">
-          <div class="issue-meta-grid">
-            <div class="issue-field">
-              <span class="issue-label">Provider</span>
-              <div class="issue-value"><strong>${esc(platform || 'Not specified')}</strong></div>
-            </div>
-            <div class="issue-field">
-              <span class="issue-label">Area</span>
-              <div class="issue-value">${esc(area || 'Not specified')}</div>
-            </div>
-            <div class="issue-field full">
-              <span class="issue-label">Issue</span>
-              <div class="issue-value issue-title">${esc(issue || 'No issue title')}</div>
-            </div>
-            ${problem && problem !== issue ? `<div class="issue-field full">
-              <span class="issue-label">Problem / Error Detail</span>
-              <div class="issue-value">${esc(problem)}</div>
-            </div>` : ''}
-            ${tried ? `<div class="issue-field full">
-              <span class="issue-label">What Was Tried</span>
-              <div class="issue-value">${esc(tried)}</div>
-            </div>` : ''}
-            <div class="issue-field">
-              <span class="issue-label">Status</span>
-              <select class="issue-select" id="issueStatus_${idx}">
-                ${['Open','Researching','Testing','Fixed','Closed'].map(s=>`<option ${s===status?'selected':''}>${s}</option>`).join('')}
-              </select>
-            </div>
-            <div class="issue-field">
-              <span class="issue-label">Training</span>
-              <div class="issue-value">${it.trainingAdded ? 'Added to Next Training' : 'Not yet added'}</div>
-            </div>
-            <div class="issue-field full">
-              <span class="issue-label">Notes</span>
-              <textarea class="issue-note" id="issueNote_${idx}" placeholder="Add or update notes anytime...">${esc(note)}</textarea>
-            </div>
-          </div>
-          <div class="issue-card-actions">
-            <button class="issue-mini-btn primary" onclick="saveIssueLogRow(${idx})">Save Note / Status</button>
-            <button class="issue-mini-btn" onclick="issueToVideo(${idx})">Related Video</button>
-            <button class="issue-mini-btn" onclick="issueToTraining(${idx})">Next Training</button>
-            <button class="issue-mini-btn" onclick="openIssueFromLog(${idx})">Open Issue</button>
-            <button class="issue-mini-btn danger" onclick="deleteIssueLogRow(${idx})">Delete</button>
-          </div>
-        </div>`;
-      wrap.appendChild(card);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td data-label="Issue ID"><strong>${esc(id)}</strong></td>
+        <td data-label="Date">${shortDate(date)}</td>
+        <td data-label="Platform / Area"><strong>${esc(platform)}</strong>${area?'<br>'+esc(area):''}</td>
+        <td data-label="Issue">${esc(issue)}</td>
+        <td data-label="Status">
+          <select class="issue-select" id="issueStatus_${idx}">
+            ${['Open','Researching','Testing','Fixed','Closed'].map(s=>`<option ${s===status?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+        <td data-label="Notes">
+          <textarea class="issue-note" id="issueNote_${idx}" placeholder="Add notes anytime...">${esc(note)}</textarea>
+          <div><button class="issue-mini-btn primary" onclick="saveIssueLogRow(${idx})">Save Note</button></div>
+        </td>
+        <td data-label="Training">
+          <button class="issue-mini-btn" onclick="issueToVideo(${idx})">Related Video</button>
+          <button class="issue-mini-btn" onclick="issueToTraining(${idx})">Next Training</button>
+        </td>
+        <td data-label="Action">
+          <button class="issue-mini-btn" onclick="openIssueFromLog(${idx})">Open</button>
+          <button class="issue-mini-btn" onclick="deleteIssueLogRow(${idx})">Delete</button>
+        </td>`;
+      body.appendChild(tr);
     });
   };
   window.saveIssueLogRow = function(idx){
@@ -1833,58 +1813,6 @@ window.updateTraining=function(i,k,v){
   localStorage.setItem('vcNextTraining',JSON.stringify(list));
 };
 document.addEventListener('DOMContentLoaded',()=>setTimeout(renderNextTraining,0));
-</script>
-
-
-<script id="issueLogNavFix">
-window.VC_OPEN_ISSUE_LOG = function(){
-  try{
-    // Hide all known app page containers.
-    document.querySelectorAll('.page-section, .page, [data-page-section]').forEach(function(el){
-      el.style.display = 'none';
-      el.classList.remove('active');
-    });
-
-    // Also hide common sections used by earlier builds.
-    document.querySelectorAll('main > section').forEach(function(el){
-      el.style.display = 'none';
-      el.classList.remove('active');
-    });
-
-    var issue = document.getElementById('issue-log');
-    if (!issue) {
-      alert('Issue Log section was not found.');
-      return;
-    }
-
-    issue.style.display = 'block';
-    issue.classList.add('active');
-
-    // Update nav active state.
-    document.querySelectorAll('.nav-btn').forEach(function(btn){
-      btn.classList.remove('active');
-    });
-    document.querySelectorAll('[data-page="issue-log"]').forEach(function(btn){
-      btn.classList.add('active');
-    });
-
-    if (typeof window.renderIssueLogTable === 'function') {
-      window.renderIssueLogTable();
-    }
-    if (typeof window.renderNextTraining === 'function') {
-      window.renderNextTraining();
-    }
-
-    issue.scrollIntoView({behavior:'smooth', block:'start'});
-  } catch(err) {
-    console.error('Issue Log navigation error:', err);
-    var issue = document.getElementById('issue-log');
-    if (issue) {
-      issue.style.display='block';
-      issue.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-  }
-};
 </script>
 
 </body>
