@@ -241,12 +241,13 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 
 <section id="classes">
  <h2>My Warehouse Technology Learning Plan</h2>
- <div class="notice success"><b>Goal:</b> Build skills that connect directly to smart-warehouse technology—not random classes. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
+ <div class="notice"><b>Class List Review:</b> Updated September 3, 2026 using current Microsoft Learn and AWS Training/Certification resources. Because course names, certifications and AI platforms change, this list should be reviewed regularly rather than treated as permanent.</div>
+ <div class="notice success"><b>Goal:</b> Maintain a focused Top 20 learning roadmap tied to Microsoft, AWS/Amazon AI, Power Platform, cloud, databases, programming and future smart-warehouse technology. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
  <div class="card">
   <div class="grid">
    <div><div class="small">Overall progress</div><div id="coursePct" class="kpi">0%</div></div>
-   <div><div class="small">Completed</div><div id="courseDone" class="kpi">0 / 10</div></div>
-   <div><div class="small">Recommended order</div><div class="kpi" style="font-size:22px">Foundation → Advanced</div></div>
+   <div><div class="small">Completed</div><div id="courseDone" class="kpi">0 / 20</div></div>
+   <div><div class="small">Learning strategy</div><div class="kpi" style="font-size:22px">Foundation → Build → AI → Advanced</div></div>
   </div>
   <div class="meter"><div id="courseMeter" style="width:0%"></div></div>
  </div>
@@ -537,16 +538,26 @@ function filterTechnologies(){
 function clearTechSearch(){document.getElementById("techSearch").value="";renderTechCards(technologies);}
 
 const warehouseCourses=[
- {id:"sql",name:"1. SQL & Relational Database Fundamentals",tech:"Asset/WMS data",level:"Foundation",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Learn tables, keys, relationships, queries and warehouse transaction models."},
- {id:"python",name:"2. Programming Fundamentals — Python or JavaScript",tech:"Automation / APIs",level:"Foundation",url:"https://docs.aws.amazon.com/serverless/latest/devguide/serverless-core.html",why:"Useful for APIs, automation, data processing and future AI integrations."},
- {id:"aws",name:"3. AWS Cloud Foundations / Builder Labs",tech:"Amazon cloud",level:"Foundation",url:"https://aws.amazon.com/training/",why:"Understand compute, storage, networking, security, databases and serverless services."},
- {id:"awsdb",name:"4. AWS Database Learning Plan",tech:"RDS / database",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Connect database design to cloud warehouse systems."},
- {id:"dev",name:"5. AWS Developer Learning Plan",tech:"Cloud apps / APIs",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/developer/",why:"Build, deploy and modernize cloud applications and services."},
- {id:"serverless",name:"6. AWS Serverless Learning Plan",tech:"Lambda / events",level:"Intermediate",url:"https://aws.amazon.com/training/learn-about/serverless/",why:"Learn event-driven workflows useful for scanners, alerts and IoT events."},
- {id:"dv",name:"7. Microsoft Dataverse Data Modeling",tech:"VC data platform",level:"Intermediate",url:"https://learn.microsoft.com/en-us/training/paths/build-data-model-microsoft-dataverse/",why:"Design secure tables, relationships, roles and business rules."},
- {id:"pa",name:"8. Power Apps Application Development",tech:"Mobile scanning",level:"Intermediate",url:"https://learn.microsoft.com/en-us/training/paths/build-apps-portals-power-apps/",why:"Build warehouse receiving, movement, QA and inventory apps."},
- {id:"api",name:"9. Dataverse Web API & Integration",tech:"Integration",level:"Advanced",url:"https://learn.microsoft.com/en-us/training/paths/integrate-power-platform-dataverse/",why:"Connect Power Platform to code, Azure and external systems."},
- {id:"bi",name:"10. Power BI + Dataverse Analytics",tech:"Operations dashboard",level:"Intermediate",url:"https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-powerbi-connector",why:"Turn operational warehouse data into KPIs, exceptions and readiness dashboards."}
+ {id:"ms-ai-agents",name:"1. Develop AI Agents on Azure (AI-3026 / Foundry)",tech:"Microsoft AI Agents",level:"Top Priority",url:"https://learn.microsoft.com/en-us/training/courses/ai-3026",why:"Build, deploy and manage intelligent agents with Microsoft Foundry; highly relevant to future operational assistants."},
+ {id:"ms-foundry",name:"2. Microsoft Foundry AI Training",tech:"Models / Agents / GenAI",level:"Top Priority",url:"https://learn.microsoft.com/en-us/training/azure/ai-foundry",why:"Current Microsoft path for models, generative AI apps, agent orchestration, evaluation and guardrails."},
+ {id:"ms-agent-vscode",name:"3. Develop AI Agents with Foundry + VS Code",tech:"AI + Coding",level:"Top Priority",url:"https://learn.microsoft.com/en-us/training/modules/develop-ai-agents-azure-vs-code/",why:"Connects AI-agent development with VS Code, tools, functions, testing and deployment."},
+ {id:"ms-ai103",name:"4. AI-103: Developing AI Apps & Agents on Azure",tech:"Azure AI Engineering",level:"Advanced",url:"https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103",why:"Current Microsoft certification direction for developers building AI applications and agents with Foundry."},
+ {id:"pp-ai-first",name:"5. Design AI-Powered Solutions with Power Platform",tech:"Power Platform + AI",level:"Top Priority",url:"https://learn.microsoft.com/en-us/training/modules/design-ai-powered-solutions-power-platform/",why:"Learn to choose Power Apps, Automate, Dataverse, Pages and agents for AI-first business solutions."},
+ {id:"pp-copilot",name:"6. Copilot for Microsoft Power Platform",tech:"Power Apps / Automate / Copilot",level:"Top Priority",url:"https://learn.microsoft.com/en-us/training/paths/copilot-power-platform/",why:"Hands-on path for Copilot-assisted Power Apps, Power Automate, Power Pages and Dataverse development."},
+ {id:"pp-ai-solutions",name:"7. Power Platform Solutions with AI & Copilot",tech:"AI Builder / GPT / Apps",level:"High",url:"https://learn.microsoft.com/en-us/training/paths/copilot-solutions/",why:"Adds AI Builder, GPT prompts and intelligent functionality to Power Platform solutions."},
+ {id:"pp-fundamentals",name:"8. Power Platform Fundamentals (PL-900 Path)",tech:"Apps / Automate / Dataverse / Agents",level:"Foundation",url:"https://learn.microsoft.com/en-us/training/paths/pl-900-power-platform-fundamentals/",why:"Updated foundation covering Dataverse, Power Apps, Power Automate and Copilot Studio."},
+ {id:"dataverse",name:"9. Dataverse Data Modeling & Governance",tech:"Warehouse Data Platform",level:"High",url:"https://learn.microsoft.com/en-us/training/powerplatform/",why:"Critical for relational warehouse assets, locations, movement history, permissions and governance."},
+ {id:"powerapps",name:"10. Power Apps Application Development",tech:"Warehouse Mobile Apps",level:"High",url:"https://learn.microsoft.com/en-us/training/powerplatform/",why:"Build receiving, scanning, movement, QA and operational applications."},
+ {id:"automate",name:"11. Power Automate + Copilot",tech:"Workflow Automation",level:"High",url:"https://learn.microsoft.com/en-us/training/modules/use-copilot-power-automate/",why:"Build exception alerts, approvals, status automation and event-driven warehouse workflows."},
+ {id:"powerbi",name:"12. Power BI Operational Analytics",tech:"Warehouse Analytics",level:"High",url:"https://learn.microsoft.com/en-us/training/powerplatform/",why:"Turn asset, movement, QA and sensor data into operational KPIs and exception dashboards."},
+ {id:"aws-ai-dev",name:"13. AWS AI Training for Developers",tech:"AWS AI / GenAI",level:"Top Priority",url:"https://aws.amazon.com/ai/learn/developers/",why:"Current AWS developer hub includes prompt engineering, Amazon Bedrock, serverless LLMs and generative AI development."},
+ {id:"bedrock",name:"14. Amazon Bedrock Getting Started",tech:"Generative AI",level:"Top Priority",url:"https://aws.amazon.com/bedrock/getting-started/",why:"Learn the AWS foundation-model platform used to build generative AI applications and agents."},
+ {id:"aws-ml",name:"15. AWS Machine Learning Engineer Associate (MLA-C02)",tech:"ML / GenAI / Agents",level:"Advanced",url:"https://aws.amazon.com/certification/certified-machine-learning-engineer-associate/",why:"The 2026 update explicitly expands toward generative AI, foundation models, LLMs, agentic workflows and AI at scale."},
+ {id:"aws-cloud",name:"16. AWS Cloud Foundations",tech:"Cloud Architecture",level:"Foundation",url:"https://aws.amazon.com/training/",why:"Understand cloud compute, storage, identity, networking, databases and architecture behind Amazon-scale systems."},
+ {id:"aws-db",name:"17. AWS Database Learning Plan",tech:"Cloud Databases",level:"High",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Build stronger relational/cloud database skills for inventory, transactions, telemetry and application backends."},
+ {id:"aws-serverless",name:"18. AWS Serverless Development",tech:"Lambda / Events / APIs",level:"High",url:"https://aws.amazon.com/training/learn-about/serverless/",why:"Useful for event-driven scanners, IoT events, alerts, integrations and AI workloads."},
+ {id:"programming",name:"19. Python + JavaScript + REST API Fundamentals",tech:"Programming / Integration",level:"Foundation",url:"https://learn.microsoft.com/en-us/training/",why:"Coding and API skills are the bridge between Power Platform, Azure AI, AWS, databases and warehouse systems."},
+ {id:"security",name:"20. Cloud Security, Identity & AI Guardrails",tech:"Security / Governance",level:"Required",url:"https://learn.microsoft.com/en-us/training/azure/ai-foundry",why:"Future warehouse AI must include identity, least privilege, data protection, model evaluation, content safety and auditability."}
 ];
 
 function getCourseState(){return JSON.parse(localStorage.getItem("vcWarehouseCourses")||"{}")}
