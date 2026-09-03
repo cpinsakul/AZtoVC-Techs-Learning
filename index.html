@@ -152,6 +152,20 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .provider-course:last-child{border-bottom:none}
 .provider-logo{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;background:#e8eef5;font-size:22px;margin-right:8px}
 .provider-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* v21 Development Troubleshooter */
+.trouble-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:16px}
+.trouble-form label{font-weight:800;display:block;margin-top:11px;margin-bottom:5px}
+.trouble-form textarea{min-height:120px;resize:vertical}
+.trouble-form select,.trouble-form input,.trouble-form textarea{width:100%;box-sizing:border-box}
+.search-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.solution-card{border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-top:10px;background:#fff}
+.issue-history-item{border-bottom:1px solid #e2e8f0;padding:10px 0}
+.issue-history-item:last-child{border-bottom:none}
+.issue-status{font-size:12px;font-weight:800;border-radius:999px;padding:3px 8px;background:#e2e8f0}
+.issue-meta{font-size:12px;color:#64748b;margin:4px 0}
+.trouble-tip{background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:10px;margin-top:10px}
+@media(max-width:850px){.trouble-grid{grid-template-columns:1fr}}
 </style>
 
 <script>
@@ -216,6 +230,7 @@ function VC_LOGIN_V19(){
  <nav>
   <button onclick="show('home')">Dashboard</button>
   <button onclick="show('providerhub')">Amazon • Microsoft • ServiceNow</button>
+  <button onclick="show('troubleshoot')">Development Troubleshooter</button>
   <button onclick="show('catalog')">Technology Catalog</button>
   <button onclick="show('watch')">Technology Watch</button>
   <button onclick="show('classes')">My Classes</button>
@@ -309,6 +324,92 @@ function VC_LOGIN_V19(){
   <button id="provServiceNow" type="button" onclick="selectProvider('servicenow')">ServiceNow</button>
  </div>
  <div id="providerContent"></div>
+</section>
+
+
+<section id="troubleshoot">
+  <h2>Development Issue & Solution Search</h2>
+  <div class="notice success">
+    <b>When you get stuck:</b> enter the exact error message or development problem. The app will prepare targeted searches for official documentation and developer communities, and save the issue in your local troubleshooting history.
+  </div>
+
+  <div class="trouble-grid">
+    <div class="card trouble-form">
+      <h3>New Development Issue</h3>
+
+      <label for="issueProvider">Technology / Provider</label>
+      <select id="issueProvider">
+        <option value="microsoft">Microsoft / Power Platform</option>
+        <option value="servicenow">ServiceNow</option>
+        <option value="aws">Amazon / AWS</option>
+        <option value="github">GitHub / Web Development</option>
+        <option value="sql">SQL / Database</option>
+        <option value="general">General Development</option>
+      </select>
+
+      <label for="issueArea">Area</label>
+      <select id="issueArea">
+        <option>Power Apps</option>
+        <option>Power Automate</option>
+        <option>Dataverse</option>
+        <option>Power BI</option>
+        <option>Copilot Studio / AI Agents</option>
+        <option>ServiceNow Flow Designer</option>
+        <option>ServiceNow App Engine</option>
+        <option>ServiceNow Integration</option>
+        <option>AWS / Bedrock</option>
+        <option>API / Integration</option>
+        <option>SQL / Transaction</option>
+        <option>HTML / JavaScript</option>
+        <option>Authentication / Security</option>
+        <option>Other</option>
+      </select>
+
+      <label for="issueTitle">Short Issue Title</label>
+      <input id="issueTitle" placeholder="Example: Power Automate flow fails after Dataverse update">
+
+      <label for="issueText">Error Message / Problem</label>
+      <textarea id="issueText" placeholder="Paste the exact error message and describe what you were trying to do."></textarea>
+
+      <label for="issueTried">What I Already Tried</label>
+      <textarea id="issueTried" style="min-height:75px" placeholder="Example: reconnected connection, republished app, tested in another browser"></textarea>
+
+      <div class="search-actions">
+        <button class="btn" type="button" onclick="runIssueSearch()">Search for Solutions</button>
+        <button class="btn secondary" type="button" onclick="saveIssueOnly()">Save Issue</button>
+        <button class="btn secondary" type="button" onclick="clearIssueForm()">Clear</button>
+      </div>
+
+      <div class="trouble-tip">
+        <b>Best results:</b> paste the exact error text. Microsoft specifically recommends searching the exact Power Automate error message when an error is not covered by a known troubleshooting article.
+      </div>
+
+      <div id="issueSearchResults"></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Quick Troubleshooting Workflow</h3>
+        <div class="workflow-box">
+          <div class="workflow-title">Issue → Search → Test → Record</div>
+          <div class="workflow-flow">
+            <div class="workflow-node">Capture Error</div><div class="workflow-arrow">→</div>
+            <div class="workflow-node">Search Sources</div><div class="workflow-arrow">→</div>
+            <div class="workflow-node">Test Fix</div><div class="workflow-arrow">→</div>
+            <div class="workflow-node vc-result">Save Solution</div>
+          </div>
+        </div>
+        <p class="small">Recommended practice: reproduce the issue, isolate recent changes, simplify the problem, test one change at a time, and document the result.</p>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>My Issue Transactions</h3>
+        <div class="small">Saved only in this browser for the prototype.</div>
+        <div id="issueHistory"></div>
+        <button class="btn secondary" type="button" onclick="exportIssueHistory()" style="margin-top:10px">Export CSV</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="catalog">
@@ -861,6 +962,159 @@ function renderClassNotes(){
  el.innerHTML=arr.length?arr.map(x=>`<div class="notice"><b>${escapeHtml(x.t)}</b> <span class="small">${x.d}</span><br>${escapeHtml(x.n)}</div>`).join(""):"<span class='small'>No class notes saved yet.</span>";
 }
 
+
+const ISSUE_STORE="vcDevIssueHistoryV21";
+
+function getIssueHistory(){
+  try{return JSON.parse(localStorage.getItem(ISSUE_STORE)||"[]");}catch(e){return [];}
+}
+function setIssueHistory(rows){
+  localStorage.setItem(ISSUE_STORE,JSON.stringify(rows));
+}
+function issueFormData(){
+  return {
+    id:"ISS-"+Date.now(),
+    created:new Date().toISOString(),
+    provider:document.getElementById("issueProvider")?.value||"general",
+    area:document.getElementById("issueArea")?.value||"Other",
+    title:(document.getElementById("issueTitle")?.value||"").trim(),
+    issue:(document.getElementById("issueText")?.value||"").trim(),
+    tried:(document.getElementById("issueTried")?.value||"").trim(),
+    status:"Open",
+    solution:""
+  };
+}
+function buildSearchLinks(d){
+  const base=[d.area,d.title,d.issue].filter(Boolean).join(" ").slice(0,700);
+  const q=encodeURIComponent(base);
+  let links=[];
+  if(d.provider==="microsoft"){
+    links=[
+      ["Microsoft Learn",`https://www.google.com/search?q=${q}+site%3Alearn.microsoft.com`],
+      ["Power Platform Community",`https://www.google.com/search?q=${q}+Power+Platform+Community`],
+      ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
+    ];
+  } else if(d.provider==="servicenow"){
+    links=[
+      ["ServiceNow Docs",`https://www.google.com/search?q=${q}+site%3Aservicenow.com+docs`],
+      ["ServiceNow Community",`https://www.google.com/search?q=${q}+ServiceNow+Community`],
+      ["ServiceNow Developer",`https://www.google.com/search?q=${q}+site%3Adeveloper.servicenow.com`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
+    ];
+  } else if(d.provider==="aws"){
+    links=[
+      ["AWS Documentation",`https://www.google.com/search?q=${q}+site%3Adocs.aws.amazon.com`],
+      ["AWS re:Post",`https://www.google.com/search?q=${q}+site%3Arepost.aws`],
+      ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
+    ];
+  } else if(d.provider==="github"){
+    links=[
+      ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
+      ["GitHub Code",`https://github.com/search?q=${q}&type=code`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
+      ["Web Search",`https://www.google.com/search?q=${q}`]
+    ];
+  } else if(d.provider==="sql"){
+    links=[
+      ["Microsoft SQL Docs",`https://www.google.com/search?q=${q}+site%3Alearn.microsoft.com+SQL`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
+      ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
+      ["Web Search",`https://www.google.com/search?q=${q}`]
+    ];
+  } else {
+    links=[
+      ["Web Search",`https://www.google.com/search?q=${q}`],
+      ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
+      ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`]
+    ];
+  }
+  return links;
+}
+function renderIssueSearch(d){
+  const el=document.getElementById("issueSearchResults"); if(!el)return;
+  const links=buildSearchLinks(d);
+  el.innerHTML=`<div class="solution-card">
+    <h3>Search prepared</h3>
+    <p><b>${escapeHtml(d.title||d.area)}</b></p>
+    <div class="search-actions">${links.map(x=>`<a class="btn secondary" href="${x[1]}" target="_blank" rel="noopener">${x[0]} ↗</a>`).join("")}</div>
+    <p class="small">Open one or more sources, test the proposed fix, then save the working solution in the issue history below.</p>
+  </div>`;
+}
+function saveIssue(d){
+  const rows=getIssueHistory();
+  rows.unshift(d);
+  setIssueHistory(rows.slice(0,100));
+  renderIssueHistory();
+}
+function runIssueSearch(){
+  const d=issueFormData();
+  if(!d.issue && !d.title){
+    alert("Please enter an issue title or error message.");
+    return;
+  }
+  saveIssue(d);
+  renderIssueSearch(d);
+}
+function saveIssueOnly(){
+  const d=issueFormData();
+  if(!d.issue && !d.title){alert("Please enter an issue title or error message.");return;}
+  saveIssue(d);
+}
+function clearIssueForm(){
+  ["issueTitle","issueText","issueTried"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+  const r=document.getElementById("issueSearchResults");if(r)r.innerHTML="";
+}
+function renderIssueHistory(){
+  const el=document.getElementById("issueHistory"); if(!el)return;
+  const rows=getIssueHistory();
+  if(!rows.length){el.innerHTML='<p class="small">No saved development issues yet.</p>';return;}
+  el.innerHTML=rows.slice(0,20).map((r,i)=>`<div class="issue-history-item">
+    <div><b>${escapeHtml(r.title||r.area)}</b> <span class="issue-status">${escapeHtml(r.status||"Open")}</span></div>
+    <div class="issue-meta">${new Date(r.created).toLocaleString()} • ${escapeHtml(r.provider)} • ${escapeHtml(r.area)}</div>
+    <div class="small">${escapeHtml((r.issue||"").slice(0,180))}</div>
+    <div class="search-actions">
+      <button class="btn secondary" type="button" onclick="reopenIssue(${i})">Search Again</button>
+      <button class="btn secondary" type="button" onclick="addIssueSolution(${i})">Add Solution</button>
+      <button class="btn secondary" type="button" onclick="closeIssue(${i})">Close</button>
+    </div>
+    ${r.solution?`<div class="notice success" style="margin-top:8px"><b>Working solution:</b> ${escapeHtml(r.solution)}</div>`:""}
+  </div>`).join("");
+}
+function reopenIssue(i){
+  const r=getIssueHistory()[i]; if(!r)return;
+  document.getElementById("issueProvider").value=r.provider;
+  document.getElementById("issueArea").value=r.area;
+  document.getElementById("issueTitle").value=r.title||"";
+  document.getElementById("issueText").value=r.issue||"";
+  document.getElementById("issueTried").value=r.tried||"";
+  renderIssueSearch(r);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function addIssueSolution(i){
+  const rows=getIssueHistory(),r=rows[i];if(!r)return;
+  const s=prompt("Enter the solution that worked:");
+  if(s===null)return;
+  r.solution=s.trim(); if(r.solution)r.status="Resolved";
+  setIssueHistory(rows);renderIssueHistory();
+}
+function closeIssue(i){
+  const rows=getIssueHistory();if(!rows[i])return;
+  rows[i].status="Closed";setIssueHistory(rows);renderIssueHistory();
+}
+function exportIssueHistory(){
+  const rows=getIssueHistory();
+  if(!rows.length){alert("No issues to export.");return;}
+  const fields=["id","created","provider","area","title","issue","tried","status","solution"];
+  const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv=[fields.join(","),...rows.map(r=>fields.map(f=>esc(r[f])).join(","))].join("\n");
+  const blob=new Blob([csv],{type:"text/csv"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="VC_Development_Issue_History.csv";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+renderIssueHistory();
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
 </script>
