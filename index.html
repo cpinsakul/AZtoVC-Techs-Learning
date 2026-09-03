@@ -122,6 +122,23 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
   .workflow-arrow{transform:rotate(90deg);text-align:center}
   .workflow-node{width:100%}
 }
+
+/* v13 per-class learning tracker */
+.learn-track{
+  margin-top:10px;padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc
+}
+.learn-track-grid{
+  display:grid;grid-template-columns:140px 1fr;gap:8px;align-items:center
+}
+.learn-track select,.learn-track input{margin:0}
+.learn-progress{
+  height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:8px
+}
+.learn-progress>div{height:100%;background:#185abd}
+.track-note{
+  margin-top:8px;font-size:12px;color:#475569
+}
+@media(max-width:650px){.learn-track-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -240,13 +257,13 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 </section>
 
 <section id="classes">
- <h2>My Warehouse Technology Learning Plan</h2>
+ <h2>My Warehouse Technology Learning Plan</h2><div class="notice success"><b>New Transaction Learning:</b> Added SQL database transactions and warehouse transaction processing. Focus areas: ACID, COMMIT/ROLLBACK, concurrency, error recovery, audit history, and how receiving → movement → QA → return transactions should update trusted warehouse records.</div>
  <div class="notice"><b>Class List Review:</b> Updated September 3, 2026 using current Microsoft Learn and AWS Training/Certification resources. Because course names, certifications and AI platforms change, this list should be reviewed regularly rather than treated as permanent.</div>
- <div class="notice success"><b>Goal:</b> Maintain a focused Top 20 learning roadmap tied to Microsoft, AWS/Amazon AI, Power Platform, cloud, databases, programming and future smart-warehouse technology. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
+ <div class="notice success"><b>Goal:</b> Maintain a focused Top 22 learning roadmap tied to Microsoft, AWS/Amazon AI, Power Platform, cloud, databases, programming and future smart-warehouse technology. Each class now has its own learning tracker. Your learning path moves from data → programming → cloud → automation → AI/robotics.</div>
  <div class="card">
   <div class="grid">
    <div><div class="small">Overall progress</div><div id="coursePct" class="kpi">0%</div></div>
-   <div><div class="small">Completed</div><div id="courseDone" class="kpi">0 / 20</div></div>
+   <div><div class="small">Completed</div><div id="courseDone" class="kpi">0 / 22</div></div>
    <div><div class="small">Learning strategy</div><div class="kpi" style="font-size:22px">Foundation → Build → AI → Advanced</div></div>
   </div>
   <div class="meter"><div id="courseMeter" style="width:0%"></div></div>
@@ -557,23 +574,63 @@ const warehouseCourses=[
  {id:"aws-db",name:"17. AWS Database Learning Plan",tech:"Cloud Databases",level:"High",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Build stronger relational/cloud database skills for inventory, transactions, telemetry and application backends."},
  {id:"aws-serverless",name:"18. AWS Serverless Development",tech:"Lambda / Events / APIs",level:"High",url:"https://aws.amazon.com/training/learn-about/serverless/",why:"Useful for event-driven scanners, IoT events, alerts, integrations and AI workloads."},
  {id:"programming",name:"19. Python + JavaScript + REST API Fundamentals",tech:"Programming / Integration",level:"Foundation",url:"https://learn.microsoft.com/en-us/training/",why:"Coding and API skills are the bridge between Power Platform, Azure AI, AWS, databases and warehouse systems."},
- {id:"security",name:"20. Cloud Security, Identity & AI Guardrails",tech:"Security / Governance",level:"Required",url:"https://learn.microsoft.com/en-us/training/azure/ai-foundry",why:"Future warehouse AI must include identity, least privilege, data protection, model evaluation, content safety and auditability."}
+ {id:"sql-trans",name:"20. Database Transactions with Transact-SQL",tech:"SQL / ACID / Concurrency",level:"High",url:"https://learn.microsoft.com/en-us/training/modules/implement-transactions-transact-sql/",why:"Learn transactions, COMMIT/ROLLBACK, error handling and concurrency so warehouse updates remain reliable when multiple steps or users are involved."},
+ {id:"warehouse-trans",name:"21. Warehouse Transaction Processing & Event Design",tech:"Asset Movement / Inventory Events",level:"High",url:"https://aws.amazon.com/training/learn-about/databases/",why:"Apply transactional thinking to receiving, assignment, movement, QA, exceptions and returns so each warehouse event has a trusted history and can be audited."},
+ {id:"security",name:"22. Cloud Security, Identity & AI Guardrails",tech:"Security / Governance",level:"Required",url:"https://learn.microsoft.com/en-us/training/azure/ai-foundry",why:"Future warehouse AI must include identity, least privilege, data protection, model evaluation, content safety and auditability."}
 ];
 
 function getCourseState(){return JSON.parse(localStorage.getItem("vcWarehouseCourses")||"{}")}
 function renderCourses(){
  const state=getCourseState(), rows=document.getElementById("courseRows"); if(!rows)return;
- rows.innerHTML=warehouseCourses.map(c=>`<div class="class-row">
-   <div><a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a><div class="small">${c.why}</div></div>
-   <div>${c.tech}</div><div><span class="tag">${c.level}</span></div>
-   <div class="track-actions"><label style="display:flex;align-items:center;gap:6px;font-weight:600"><input style="width:auto;margin:0" type="checkbox" ${state[c.id]?"checked":""} onchange="setCourse('${c.id}',this.checked)"> Done</label></div>
- </div>`).join("");
- const done=warehouseCourses.filter(c=>state[c.id]).length, pct=Math.round(done/warehouseCourses.length*100);
- document.getElementById("coursePct").textContent=pct+"%";
- document.getElementById("courseDone").textContent=done+" / "+warehouseCourses.length;
- document.getElementById("courseMeter").style.width=pct+"%";
+ rows.innerHTML=warehouseCourses.map(c=>{
+   const s=state[c.id]||{};
+   const status=s.status||"Not Started";
+   const pct=Math.max(0,Math.min(100,Number(s.pct||0)));
+   const note=s.note||"";
+   return `<div class="class-row">
+     <div>
+       <a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a>
+       <div class="small">${c.why}</div>
+       <div class="learn-track">
+         <div class="learn-track-grid">
+           <label>Status</label>
+           <select onchange="setCourseField('${c.id}','status',this.value)">
+             <option ${status==="Not Started"?"selected":""}>Not Started</option>
+             <option ${status==="Learning"?"selected":""}>Learning</option>
+             <option ${status==="Practice"?"selected":""}>Practice</option>
+             <option ${status==="Completed"?"selected":""}>Completed</option>
+           </select>
+           <label>Progress %</label>
+           <input type="number" min="0" max="100" value="${pct}" onchange="setCourseField('${c.id}','pct',this.value)">
+           <label>My learning note</label>
+           <input value="${escapeHtml(note)}" placeholder="What did I learn or build?" onchange="setCourseField('${c.id}','note',this.value)">
+         </div>
+         <div class="learn-progress"><div style="width:${pct}%"></div></div>
+         <div class="track-note">Track this class individually: status, progress, and your own note.</div>
+       </div>
+     </div>
+     <div>${c.tech}</div>
+     <div><span class="tag">${c.level}</span></div>
+     <div><b>${pct}%</b><div class="small">${status}</div></div>
+   </div>`;
+ }).join("");
+ const vals=warehouseCourses.map(c=>state[c.id]||{});
+ const completed=vals.filter(s=>(s.status==="Completed"||Number(s.pct)>=100)).length;
+ const avg=Math.round(vals.reduce((a,s)=>a+Math.max(0,Math.min(100,Number(s.pct||0))),0)/warehouseCourses.length);
+ document.getElementById("coursePct").textContent=avg+"%";
+ document.getElementById("courseDone").textContent=completed+" / "+warehouseCourses.length;
+ document.getElementById("courseMeter").style.width=avg+"%";
 }
-function setCourse(id,val){const s=getCourseState();s[id]=val;localStorage.setItem("vcWarehouseCourses",JSON.stringify(s));renderCourses()}
+function setCourseField(id,field,val){
+ const s=getCourseState();
+ if(!s[id] || typeof s[id]!=="object") s[id]={status:s[id]===true?"Completed":"Not Started",pct:s[id]===true?100:0,note:""};
+ if(field==="pct") val=Math.max(0,Math.min(100,Number(val)||0));
+ s[id][field]=val;
+ if(field==="status" && val==="Completed") s[id].pct=100;
+ localStorage.setItem("vcWarehouseCourses",JSON.stringify(s));
+ renderCourses();
+}
+function setCourse(id,val){setCourseField(id,"status",val?"Completed":"Not Started");setCourseField(id,"pct",val?100:0);}
 function saveClassNote(){
  const t=document.getElementById("classNoteTopic").value.trim(), n=document.getElementById("classNoteText").value.trim(); if(!t)return;
  const arr=JSON.parse(localStorage.getItem("vcWarehouseClassNotes")||"[]");arr.unshift({t,n,d:new Date().toLocaleDateString()});
