@@ -171,6 +171,13 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .source-meta{margin-top:8px;padding-top:8px;border-top:1px dashed #cbd5e1;font-size:12px;color:#475569}
 .source-date{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:#eef2f7;font-weight:700;color:#334155}
 .source-reviewed{font-size:11px;color:#64748b;margin-top:4px}
+
+.related-video-box{margin-top:10px;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc}
+.related-video-title{font-size:12px;font-weight:800;color:#334155;margin-bottom:6px}
+.video-fresh{display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;background:#dcfce7;color:#166534;margin-left:6px}
+
+.freshness-note{margin:8px 0;padding:9px 11px;border:1px solid #86efac;background:#f0fdf4;border-radius:9px;font-size:12px;color:#166534}
+.stale-hidden{display:none!important}
 </style>
 
 <script>
@@ -321,7 +328,7 @@ function VC_LOGIN_V19(){
 
 
 <section id="providerhub">
- <h2>Amazon / AWS • Microsoft • ServiceNow Technology Hub</h2>
+ <h2>Amazon / AWS • Microsoft • ServiceNow Technology Hub</h2><div class="freshness-note"><b>Freshness policy:</b> Show only information and videos from the last 12 months. Content older than 1 year is hidden from the active learning view.</div><div class="notice"><b>Video rule:</b> Every technology and learning topic should have a related video. Prefer the newest useful <b>official provider video</b>, ideally 2026; if none is available, use the newest relevant video and label older material as background.</div>
  <div class="notice success"><b>Choose a technology ecosystem:</b> Amazon / AWS, Microsoft, or ServiceNow. Each provider follows the same concept: technology → workflow → VC use → recommended learning → personal tracking.</div><div class="notice"><b>Video Learning:</b> Video resources are kept because they make robotics, AI agents, workflows, Power Platform, and ServiceNow concepts easier to understand visually. Each provider technology now includes a video-learning button.</div>
  <div class="provider-choice">
   <button id="provAmazon" class="active" type="button" onclick="selectProvider('amazon')">Amazon / AWS</button>
@@ -578,6 +585,7 @@ function VC_LOGIN_V19(){
  </div>
 </section>
 <div class="source-meta" style="margin:18px"><b>Updated:</b> <span class="source-date">9/3/26 11:05 AM</span> • Amazon/AWS, Microsoft, ServiceNow and learning links should be periodically rechecked because provider content can change.</div>
+<div class="source-meta" style="margin:18px"><b>Freshness:</b> Last 12 months only • Cutoff updates automatically each day.</div>
 </main>
 <footer>Prototype v1.0 — Warehouse Technology Learning & Implementation Hub</footer>
 
@@ -869,10 +877,10 @@ function renderProvider(){
   </div></div>
   <p><b>VC use:</b> ${t[4]}</p><div class="provider-learning"><b>Learn:</b> ${t[5].join(" • ")}</div>
   <div class="media-actions" style="margin-top:10px">
-   ${t[6]?`<a class="btn secondary" href="${t[6]}" target="_blank" rel="noopener">▶ Watch / Find Video</a>`:""}
+   ${t[6]?`<div class="related-video-box"><div class="related-video-title">Related Video <span class="video-fresh">Newest / Official preferred</span></div><a class="btn secondary" href="${freshVideoSearch((t[0]||'')+' '+(p.title||'')+' official')}" target="_blank" rel="noopener">▶ Find Latest Related Video</a><div class="small" style="margin-top:5px">Search rule: newest useful official video first; use older videos only for background.</div></div>`:""}
   </div>
  </div>`).join("");
- const courses=p.courses.map((c,i)=>`<div class="provider-course"><b>${i+1}. <a class="class-link" href="${c[1]}" target="_blank" rel="noopener">${c[0]} ↗</a></b> <a class="class-link" style="margin-left:10px" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' official tutorial')}" target="_blank" rel="noopener">▶ Video</a><div class="source-meta"><b>Source:</b> Official/provider learning resource <span class="source-date">Updated ${p.reviewed}</span></div></div>`).join("");
+ const courses=p.courses.map((c,i)=>`<div class="provider-course"><b>${i+1}. <a class="class-link" href="${c[1]}" target="_blank" rel="noopener">${c[0]} ↗</a></b> <a class="class-link" style="margin-left:10px" href="${freshVideoSearch(c[0]+' official tutorial')}" target="_blank" rel="noopener">▶ Latest Video</a><div class="source-meta"><b>Source:</b> Official/provider learning resource <span class="source-date">Updated ${p.reviewed}</span></div></div>`).join("");
  el.innerHTML=`<div class="provider-banner"><div style="display:flex;align-items:center"><span class="provider-logo">${p.icon}</span><div><h3 style="margin:0">${p.title}</h3><div class="small">Updated: ${p.reviewed}</div></div></div><p>${p.summary}</p><a class="btn" href="${p.official}" target="_blank" rel="noopener">Official Provider Source</a>
    <div class="source-meta"><b>Source:</b> Official ${p.title.split("—")[0].trim()} resource
    <span class="source-date">Updated ${p.reviewed}</span>
@@ -922,7 +930,7 @@ function renderCourses(){
      <div>
        <a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a>
        <div class="small">${c.why}</div>
-       <div class="source-meta"><b>Learning source:</b> ${new URL(c.url).hostname.replace("www.","")} <span class="source-date">Updated 9/3/26 11:05 AM</span></div>
+       <div class="source-meta"><b>Learning source:</b> ${new URL(c.url).hostname.replace("www.","")} <span class="source-date">Updated 9/3/26 11:05 AM</span></div><div class="related-video-box"><div class="related-video-title">Related Learning Video <span class="video-fresh">Latest preferred</span></div><a class="class-link" href="${freshVideoSearch(c.name+' official tutorial')}" target="_blank" rel="noopener">▶ Find newest related video</a></div>
        <div class="learn-track">
          <div class="learn-track-grid">
            <label>Status</label>
@@ -974,6 +982,31 @@ function renderClassNotes(){
 }
 
 
+
+function getFreshCutoffISO(){
+  const d=new Date();
+  d.setFullYear(d.getFullYear()-1);
+  return d.toISOString().slice(0,10);
+}
+function freshVideoSearch(topic){
+  const query=(topic||"")+" site:youtube.com after:"+getFreshCutoffISO();
+  return "https://www.google.com/search?q="+encodeURIComponent(query);
+}
+function isWithinOneYear(dateValue){
+  if(!dateValue) return true; // unknown dates are not auto-removed; source link remains reviewable.
+  const d=new Date(dateValue);
+  if(isNaN(d.getTime())) return true;
+  const cutoff=new Date();
+  cutoff.setFullYear(cutoff.getFullYear()-1);
+  return d>=cutoff;
+}
+function applyFreshnessFilter(){
+  document.querySelectorAll("[data-source-date]").forEach(el=>{
+    const date=el.getAttribute("data-source-date");
+    el.classList.toggle("stale-hidden",!isWithinOneYear(date));
+  });
+}
+
 const ISSUE_STORE="vcDevIssueHistoryV21";
 
 function getIssueHistory(){
@@ -998,25 +1031,27 @@ function issueFormData(){
 function buildSearchLinks(d){
   const base=[d.area,d.title,d.issue].filter(Boolean).join(" ").slice(0,700);
   const q=encodeURIComponent(base);
+  const freshAfter=" after:"+getFreshCutoffISO();
+  const qFresh=encodeURIComponent(base+freshAfter);
   let links=[];
   if(d.provider==="microsoft"){
     links=[
-      ["Microsoft Learn",`https://www.google.com/search?q=${q}+site%3Alearn.microsoft.com`],
-      ["Power Platform Community",`https://www.google.com/search?q=${q}+Power+Platform+Community`],
+      ["Microsoft Learn",`https://www.google.com/search?q=${qFresh}+site%3Alearn.microsoft.com`],
+      ["Power Platform Community",`https://www.google.com/search?q=${qFresh}+Power+Platform+Community`],
       ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
     ];
   } else if(d.provider==="servicenow"){
     links=[
-      ["ServiceNow Docs",`https://www.google.com/search?q=${q}+site%3Aservicenow.com+docs`],
-      ["ServiceNow Community",`https://www.google.com/search?q=${q}+ServiceNow+Community`],
-      ["ServiceNow Developer",`https://www.google.com/search?q=${q}+site%3Adeveloper.servicenow.com`],
+      ["ServiceNow Docs",`https://www.google.com/search?q=${qFresh}+site%3Aservicenow.com+docs`],
+      ["ServiceNow Community",`https://www.google.com/search?q=${qFresh}+ServiceNow+Community`],
+      ["ServiceNow Developer",`https://www.google.com/search?q=${qFresh}+site%3Adeveloper.servicenow.com`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
     ];
   } else if(d.provider==="aws"){
     links=[
-      ["AWS Documentation",`https://www.google.com/search?q=${q}+site%3Adocs.aws.amazon.com`],
-      ["AWS re:Post",`https://www.google.com/search?q=${q}+site%3Arepost.aws`],
+      ["AWS Documentation",`https://www.google.com/search?q=${qFresh}+site%3Adocs.aws.amazon.com`],
+      ["AWS re:Post",`https://www.google.com/search?q=${qFresh}+site%3Arepost.aws`],
       ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`]
     ];
@@ -1025,18 +1060,18 @@ function buildSearchLinks(d){
       ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
       ["GitHub Code",`https://github.com/search?q=${q}&type=code`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
-      ["Web Search",`https://www.google.com/search?q=${q}`]
+      ["Web Search",`https://www.google.com/search?q=${qFresh}`]
     ];
   } else if(d.provider==="sql"){
     links=[
-      ["Microsoft SQL Docs",`https://www.google.com/search?q=${q}+site%3Alearn.microsoft.com+SQL`],
+      ["Microsoft SQL Docs",`https://www.google.com/search?q=${qFresh}+site%3Alearn.microsoft.com+SQL`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
       ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`],
-      ["Web Search",`https://www.google.com/search?q=${q}`]
+      ["Web Search",`https://www.google.com/search?q=${qFresh}`]
     ];
   } else {
     links=[
-      ["Web Search",`https://www.google.com/search?q=${q}`],
+      ["Web Search",`https://www.google.com/search?q=${qFresh}`],
       ["Stack Overflow",`https://stackoverflow.com/search?q=${q}`],
       ["GitHub Issues",`https://github.com/search?q=${q}&type=issues`]
     ];
@@ -1128,6 +1163,7 @@ function exportIssueHistory(){
 
 renderIssueHistory();
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
+applyFreshnessFilter();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
 </script>
 
