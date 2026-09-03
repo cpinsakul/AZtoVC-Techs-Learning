@@ -179,45 +179,20 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .freshness-note{margin:8px 0;padding:9px 11px;border:1px solid #86efac;background:#f0fdf4;border-radius:9px;font-size:12px;color:#166534}
 .stale-hidden{display:none!important}
 
-/* v26 warehouse technology login */
-#loginOverlay{
-  background:
-    radial-gradient(circle at 12% 18%,rgba(37,99,235,.18),transparent 26%),
-    radial-gradient(circle at 88% 78%,rgba(14,116,144,.15),transparent 25%),
-    linear-gradient(135deg,#07111f 0%,#10243e 52%,#07111f 100%);
+/* v27 researched issue center + login visual */
+.login-warehouse-picture{
+  margin:14px 0 18px;border-radius:14px;overflow:hidden;border:1px solid #334155;
+  box-shadow:0 12px 35px rgba(0,0,0,.28);background:#07111f
 }
-#loginOverlay .login-card{
-  max-width:1000px!important;width:min(94vw,1000px)!important;padding:0!important;
-  overflow:hidden;border:1px solid rgba(255,255,255,.2);box-shadow:0 24px 70px rgba(0,0,0,.38);
-}
-.warehouse-login-shell{display:grid;grid-template-columns:1.15fr .85fr;min-height:510px;background:#fff}
-.warehouse-hero{position:relative;padding:34px;color:#fff;background:linear-gradient(150deg,#0f2743,#173f67);overflow:hidden}
-.warehouse-hero h1{font-size:31px;line-height:1.08;margin:12px 0 8px}
-.warehouse-hero p{color:#dbeafe;max-width:540px}
-.warehouse-kicker{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:900;color:#93c5fd}
-.warehouse-scene{position:absolute;left:0;right:0;bottom:0;height:270px}
-.wh-floor{position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(#52677e,#334155)}
-.wh-rack{position:absolute;bottom:62px;width:92px;height:154px;border:7px solid #dbeafe;border-top-width:9px}
-.wh-rack:before,.wh-rack:after{content:"";position:absolute;left:0;right:0;height:6px;background:#dbeafe}
-.wh-rack:before{top:47px}.wh-rack:after{top:98px}
-.wh-rack.r1{left:34px}.wh-rack.r2{left:154px}.wh-rack.r3{right:35px}
-.wh-box{position:absolute;width:26px;height:24px;background:#f59e0b;border:2px solid #fbbf24;border-radius:2px}
-.wh-robot{position:absolute;bottom:65px;left:47%;width:82px;height:34px;background:#38bdf8;border-radius:8px 8px 5px 5px;box-shadow:0 0 22px rgba(56,189,248,.5)}
-.wh-robot:before,.wh-robot:after{content:"";position:absolute;bottom:-7px;width:16px;height:16px;border-radius:50%;background:#0f172a;border:3px solid #94a3b8}
-.wh-robot:before{left:10px}.wh-robot:after{right:10px}
-.wh-scan{position:absolute;bottom:110px;left:55%;width:2px;height:95px;background:#22d3ee;transform:rotate(22deg);box-shadow:0 0 12px #22d3ee}
-.wh-chip{position:absolute;right:142px;top:70px;width:72px;height:72px;border:2px solid #60a5fa;border-radius:12px;display:grid;place-items:center;font-weight:900;color:#bfdbfe;background:rgba(15,23,42,.45)}
-.wh-data{position:absolute;right:42px;top:75px;width:76px}
-.wh-data i{display:block;height:6px;margin:8px 0;border-radius:6px;background:#38bdf8}
-.login-form-side{padding:38px 34px;display:flex;flex-direction:column;justify-content:center}
-.login-form-side h2{margin:0 0 6px;font-size:25px}
-.login-form-side .secure-caption{font-size:12px;color:#64748b;margin-bottom:20px}
-.login-tech-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
-.login-tech-row span{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eff6ff;color:#1e40af}
-@media(max-width:760px){
- .warehouse-login-shell{grid-template-columns:1fr}.warehouse-hero{min-height:300px}
- .warehouse-scene{height:200px}.login-form-side{padding:28px 22px}
-}
+.login-warehouse-picture img{display:block;width:100%;height:220px;object-fit:cover;object-position:left center}
+.issue-research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:12px}
+.research-card{border:1px solid #cbd5e1;border-radius:11px;padding:13px;background:#fff}
+.research-card h4{margin:0 0 7px}
+.research-tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 7px;border-radius:999px;background:#e0f2fe;color:#075985;margin-right:5px}
+.research-fresh{background:#dcfce7;color:#166534}
+.research-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.class-trouble-btn{margin-left:7px}
+.auto-research-note{font-size:12px;color:#475569;margin-top:7px}
 </style>
 
 <script>
@@ -380,7 +355,7 @@ function VC_LOGIN_V19(){
 
 
 <section id="troubleshoot">
-  <h2>Development Issue & Solution Search</h2>
+  <h2>Development Issue & Solution Search</h2><div class="freshness-note"><b>Auto Research:</b> YouTube + trusted websites • Last 12 months only</div>
   <div class="notice success">
     <b>When you get stuck:</b> enter the exact error message or development problem. The app will prepare targeted searches for official documentation and developer communities, and save the issue in your local troubleshooting history.
   </div>
@@ -462,6 +437,12 @@ function VC_LOGIN_V19(){
       </div>
     </div>
   </div>
+
+<div class="card" style="margin-top:16px">
+  <h3>Recent Issue Research — Last 12 Months Only</h3>
+  <div class="small">Curated examples from recent official documentation/community guidance. Use <b>Research This Issue</b> to search newer web and video results automatically using the rolling 12-month cutoff.</div>
+  <div id="recentIssueResearch" class="issue-research-grid"></div>
+</div>
 </section>
 
 <section id="catalog">
@@ -970,7 +951,7 @@ function renderCourses(){
      <div>
        <a class="class-link" href="${c.url}" target="_blank" rel="noopener">${c.name} ↗</a>
        <div class="small">${c.why}</div>
-       <div class="source-meta"><b>Learning source:</b> ${new URL(c.url).hostname.replace("www.","")} <span class="source-date">Updated 9/3/26 11:05 AM</span></div><div class="related-video-box"><div class="related-video-title">Related Learning Video <span class="video-fresh">Latest preferred</span></div><a class="class-link" href="${freshVideoSearch(c.name+' official tutorial')}" target="_blank" rel="noopener">▶ Find newest related video</a></div>
+       <div class="source-meta"><b>Learning source:</b> ${new URL(c.url).hostname.replace("www.","")} <span class="source-date">Updated 9/3/26 11:05 AM</span></div><div class="related-video-box"><div class="related-video-title">Related Learning Video <span class="video-fresh">Latest preferred</span></div><a class="class-link" href="${freshVideoSearch(c.name+' official tutorial')}" target="_blank" rel="noopener">▶ Find newest related video</a> <button type="button" class="btn secondary class-trouble-btn" onclick="troubleshootClass('${c.name.replace(/'/g,"&#39;")}')">⚙ Troubleshoot Class</button></div>
        <div class="learn-track">
          <div class="learn-track-grid">
            <label>Status</label>
@@ -1125,7 +1106,10 @@ function renderIssueSearch(d){
     <h3>Search prepared</h3>
     <p><b>${escapeHtml(d.title||d.area)}</b></p>
     <div class="source-meta"><b>Search created:</b> <span class="source-date">${new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",year:"2-digit",hour:"numeric",minute:"2-digit"})}</span> • Check source for latest update.</div>
-    <div class="search-actions">${links.map(x=>`<a class="btn secondary" href="${x[1]}" target="_blank" rel="noopener">${x[0]} ↗</a>`).join("")}</div>
+    <div class="search-actions">${links.map(x=>`<a class="btn secondary" href="${x[1]}" target="_blank" rel="noopener">${x[0]} ↗</a>`).join("")}
+      <a class="btn secondary" href="${freshVideoSearch(d.title+' '+d.area+' '+d.issue)}" target="_blank" rel="noopener">▶ YouTube: last 12 months</a>
+      <a class="btn secondary" href="https://www.google.com/search?q=${encodeURIComponent((d.title+' '+d.area+' '+d.issue)+' after:'+getFreshCutoffISO())}" target="_blank" rel="noopener">🌐 Web: last 12 months</a>
+    </div>
     <p class="small">Open one or more sources, test the proposed fix, then save the working solution in the issue history below.</p>
   </div>`;
 }
@@ -1202,6 +1186,68 @@ function exportIssueHistory(){
 }
 
 renderIssueHistory();
+
+const RECENT_ISSUE_RESEARCH=[
+ {platform:"Microsoft",area:"Power Apps",title:"Common Power Apps issues",date:"2026-03-01",summary:"Recent Microsoft troubleshooting guidance covers connectors, delegation, Power Automate integration, Power Fx, Studio/forms, browser performance and connection permissions.",source:"https://learn.microsoft.com/en-us/troubleshoot/power-platform/power-apps/create-and-use-apps/common-issues-and-resolutions"},
+ {platform:"Microsoft",area:"Power Apps",title:"Startup / sign-in problems",date:"2026-04-01",summary:"Microsoft recommends checking browser storage/cookies, clearing cache, trying another supported browser, network connectivity, and reviewing Microsoft Entra authentication errors.",source:"https://learn.microsoft.com/en-us/troubleshoot/power-platform/power-apps/sign-in/troubleshooting-startup-issues"},
+ {platform:"Microsoft",area:"Power Automate",title:"Cloud flow failures",date:"2026-05-01",summary:"Recent guidance separates save, trigger, action and logic failures. Common fixes include checking validation messages, run history, failed actions, authentication, null values and SharePoint threshold behavior.",source:"https://learn.microsoft.com/en-us/power-automate/troubleshoot-flow-errors"},
+ {platform:"Microsoft",area:"Power Apps",title:"Power Apps error handling",date:"2026-02-27",summary:"Use formula-level error handling such as IfError/IsError and App.OnError to capture useful error details and log failures.",source:"https://learn.microsoft.com/en-us/power-apps/guidance/coding-guidelines/error-handling"},
+ {platform:"ServiceNow",area:"Flow Designer",title:"Common Flow Designer errors",date:"2025-10-10",summary:"ServiceNow guidance covers missing flow/sys_id references, security-rule failures and stuck flows, including checking missing subflows and flow context.",source:"https://www.servicenow.com/community/workflow-automation-articles/how-to-resolve-three-common-errors-in-flow-designer/ta-p/3403125"},
+ {platform:"AWS",area:"Lambda",title:"Lambda invocation timeouts",date:"2026-07-01",summary:"AWS re:Post recommends confirming timeout events in CloudWatch logs, using request IDs to trace invocations, then fixing the underlying configuration, dependency, networking or workload cause.",source:"https://repost.aws/knowledge-center/lambda-troubleshoot-invocation-timeouts"}
+];
+
+function shortDate(d){
+ const x=new Date(d+"T12:00:00");
+ return x.toLocaleDateString("en-US",{month:"numeric",day:"numeric",year:"2-digit"});
+}
+function renderRecentIssueResearch(){
+ const el=document.getElementById("recentIssueResearch"); if(!el)return;
+ const rows=RECENT_ISSUE_RESEARCH.filter(x=>isWithinOneYear(x.date));
+ el.innerHTML=rows.map((x,i)=>`<div class="research-card">
+   <div><span class="research-tag">${escapeHtml(x.platform)}</span><span class="research-tag">${escapeHtml(x.area)}</span><span class="research-tag research-fresh">Fresh ${shortDate(x.date)}</span></div>
+   <h4>${escapeHtml(x.title)}</h4>
+   <div class="small">${escapeHtml(x.summary)}</div>
+   <div class="research-actions">
+     <a class="btn secondary" href="${x.source}" target="_blank" rel="noopener">Official Source ↗</a>
+     <button class="btn secondary" type="button" onclick="researchKnownIssue(${i})">Research This Issue</button>
+     <a class="btn secondary" href="${freshVideoSearch(x.title+' '+x.platform)}" target="_blank" rel="noopener">▶ Latest Video</a>
+   </div>
+ </div>`).join("");
+}
+function researchKnownIssue(i){
+ const x=RECENT_ISSUE_RESEARCH[i]; if(!x)return;
+ show("troubleshoot");
+ const p=document.getElementById("issueProvider");
+ const a=document.getElementById("issueArea");
+ const t=document.getElementById("issueTitle");
+ const d=document.getElementById("issueText");
+ if(p){
+   const map={Microsoft:"microsoft",ServiceNow:"servicenow",AWS:"aws"};
+   p.value=map[x.platform]||"general";
+ }
+ if(a){
+   const opts=[...a.options];
+   const exact=opts.find(o=>o.text.toLowerCase().includes(x.area.toLowerCase()));
+   if(exact)a.value=exact.value;
+ }
+ if(t)t.value=x.title;
+ if(d)d.value=x.summary;
+ const data=issueFormData();
+ renderIssueSearch(data);
+ document.getElementById("issueSearchResults")?.scrollIntoView({behavior:"smooth",block:"center"});
+}
+function troubleshootClass(className){
+ show("troubleshoot");
+ const title=document.getElementById("issueTitle");
+ const issue=document.getElementById("issueText");
+ if(title)title.value="Development issue while learning: "+className;
+ if(issue)issue.value="I am working on "+className+" and I am stuck with this issue: ";
+ setTimeout(()=>issue?.focus(),100);
+ const results=document.getElementById("issueSearchResults");
+ if(results)results.innerHTML=`<div class="solution-card"><h3>Class Troubleshooting Ready</h3><p>Add your exact error message, then click <b>Search for Solutions</b>.</p><div class="research-actions"><a class="btn secondary" href="${freshVideoSearch(className+' troubleshooting error solution')}" target="_blank" rel="noopener">▶ Latest troubleshooting videos</a><a class="btn secondary" href="https://www.google.com/search?q=${encodeURIComponent(className+' troubleshooting error solution after:'+getFreshCutoffISO())}" target="_blank" rel="noopener">Search recent websites ↗</a></div><div class="auto-research-note">Only the last 12 months are targeted.</div></div>`;
+}
+
+renderRecentIssueResearch();
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
 applyFreshnessFilter();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
