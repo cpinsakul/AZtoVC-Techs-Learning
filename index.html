@@ -153,19 +153,56 @@ footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
 .provider-logo{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;background:#e8eef5;font-size:22px;margin-right:8px}
 .provider-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 </style>
+
+<script>
+function VC_LOGIN_V19(){
+  var email = document.getElementById("email").value.replace(/^\s+|\s+$/g,"");
+  var code = document.getElementById("code").value.replace(/^\s+|\s+$/g,"");
+  var role = document.getElementById("role").value || "User";
+  var msg = document.getElementById("loginMsg");
+  if(!email || email.indexOf("@") < 1 || email.lastIndexOf(".") < email.indexOf("@")+2){
+    msg.innerHTML = "<b style='color:#b91c1c'>Please enter a valid work email.</b>";
+    return false;
+  }
+  if(code !== "2612100"){
+    msg.innerHTML = "<b style='color:#b91c1c'>Incorrect email or access code.</b>";
+    return false;
+  }
+  try {
+    sessionStorage.setItem("whUser", JSON.stringify({email:email,role:role}));
+  } catch(e) {}
+  var overlay = document.getElementById("loginOverlay");
+  if(overlay){
+    overlay.style.display = "none";
+    overlay.className += " hidden";
+  }
+  var badge = document.getElementById("userBadge");
+  if(badge) badge.innerHTML = email + " • " + role;
+  var admin = document.getElementById("adminNav");
+  if(admin) admin.style.display = role === "Admin" ? "" : "none";
+  var home = document.getElementById("home");
+  if(home){
+    var sections = document.querySelectorAll("main section");
+    for(var i=0;i<sections.length;i++) sections[i].classList.remove("active");
+    home.classList.add("active");
+  }
+  return false;
+}
+</script>
+
 </head>
 <body>
 <div id="loginOverlay">
   <div class="loginBox">
-    <h2>Warehouse Technology Hub</h2><p class="notice success"><b>Demo Sign-In:</b><br>Email: <b>test@vc.gov</b><br>Access Code: <b>2612100</b><br>Role: choose User, Supervisor, or Admin.</p>
-    <p class="small">Prototype access. Production should use Microsoft Entra ID / organizational SSO instead of a browser-stored passcode.</p>
+    <h2>VC Multi-Platform Technology Hub</h2>
+    <p class="small">Secure access for authorized users.</p>
     <label>Work Email</label>
     <input id="email" type="email" placeholder="name@organization.gov">
     <label>Access Code</label>
-    <input id="code" type="password" placeholder="Enter demo code">
+    <input id="code" type="password" placeholder="Enter demo code" onkeydown="if(event.key===\'Enter\'){event.preventDefault();VC_LOGIN_V19();}">
     <label>Role</label>
     <select id="role"><option>User</option><option>Supervisor</option><option>Admin</option></select>
-    <button id="signInBtn" class="btn" type="button">Sign in</button>
+    <button id="signInBtn" class="btn" type="button" onclick="return VC_LOGIN_V19();">Sign in</button>
     <div id="loginMsg" class="small" style="margin-top:10px"></div>
   </div>
 </div>
@@ -569,9 +606,14 @@ function login(){
  return false;
 }
 function applyUser(){
- const raw=sessionStorage.getItem("whUser"); if(!raw)return;
- const u=JSON.parse(raw); document.getElementById("userBadge").textContent=u.email+" • "+u.role;
- document.getElementById("adminNav").classList.toggle("hidden",u.role!=="Admin");
+ var raw=sessionStorage.getItem("whUser"); if(!raw)return;
+ try{
+   var u=JSON.parse(raw);
+   var badge=document.getElementById("userBadge");
+   if(badge) badge.textContent=u.email+" • "+u.role;
+   var admin=document.getElementById("adminNav");
+   if(admin) admin.classList.toggle("hidden",u.role!=="Admin");
+ }catch(e){sessionStorage.removeItem("whUser");}
 }
 function logout(){sessionStorage.removeItem("whUser");location.reload()}
 function scoreFit(){
@@ -819,10 +861,6 @@ function renderClassNotes(){
  el.innerHTML=arr.length?arr.map(x=>`<div class="notice"><b>${escapeHtml(x.t)}</b> <span class="small">${x.d}</span><br>${escapeHtml(x.n)}</div>`).join(""):"<span class='small'>No class notes saved yet.</span>";
 }
 
-document.getElementById("signInBtn")?.addEventListener("click",login);
-document.getElementById("code")?.addEventListener("keydown",function(e){
- if(e.key==="Enter"){e.preventDefault();login();}
-});
 buildCatalog();renderLearning();applyUser();renderCourses();renderClassNotes();renderProvider();
 if(sessionStorage.getItem("whUser"))document.getElementById("loginOverlay").classList.add("hidden");
 </script>
